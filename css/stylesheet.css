@@ -1,0 +1,241 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    width: 800px;
+    height: 100%;
+    margin: auto;
+    max-width: 800px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fefbf6;
+    color: #3d3c42;
+    font-size: 12px;
+  }
+  
+  header {
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .nav-tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #a6d1e6;
+    border-radius: 50px 15px;
+  }
+  
+  .nav-tabs li {
+    float: left;
+    display: inline;
+    padding-left: 20px;
+  }
+  
+  .nav-tabs li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #fefbf6;
+    margin:0 4px 0 4px;
+  }
+  
+  h2,
+  h3,
+  h4,
+  .bedankt,
+  img
+  {
+    padding-left: 10px;
+  }
+  
+  h3 {
+    font-size: 20px;
+    margin: 16px 0;
+  }
+  
+  p,
+  .hobbies {
+    padding-left: 10px;
+  }
+  
+  label {
+    display: inline-block;
+    margin: 8px 0;
+    width: 120px;
+    text-align: left;
+  }
+  
+  .error {
+    color: red;
+    display: inline;
+    font-size: 10px;
+  }
+  
+  .error2 {
+    margin-left: 124px;
+    color: red;
+    font-size: 10px;
+    display: inline;
+  }
+  
+  .option {
+    width: 50px;
+  }
+  
+  fieldset {
+    border: none;
+  }
+  
+  .preferred {
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .gender,
+  .name,
+  .email,
+  .phone,
+  .question,
+  .submit,
+  .password,
+  .password-repeat {
+    width: 50%;
+    box-sizing: border-box;
+  }
+  
+  .radio {
+    display: inline-block;
+    width: 20px;
+  }
+  
+  textarea {
+    vertical-align: middle;
+    width: 50%;
+    height: 100px;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  
+  .submit {
+    margin-top: 20px;
+    margin-left: 134px;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 10px rounded #3d3c42;
+  }
+  
+  footer {
+    background-color: #3d3c42;
+    border-radius: 50px 15px;
+  }
+  
+  .copyright {
+    color: #fefbf6;
+    text-align: right;
+    font-size: 10px;
+    margin-right: 10px;
+  }
+  
+  .results {
+    margin-left: 10px;
+  }
+  
+  .input-group {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .input-group + .input-group {
+    margin-top: 10px;
+  }
+
+  .product-list {
+    text-align: center;
+    display: inline-block;
+    margin: 0 2px 0 2px;
+  }
+
+  .shop-products {
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 20px;
+    border-color: #3d3c42 3px transparent;
+  }
+
+  .set-quantity {
+    width: 20px;
+    font-size: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    position: relative;
+    margin-left: 10px;
+  }
+
+  .btn-btn {
+    font-size: 8px;
+    background-color: #a6d1e6;
+    border-radius: 5px;
+    position: relative;
+    margin-left: 10px;
+  }
+
+  tr {
+    text-align: left;
+  }
+
+  tr {
+    font-size: 10px;
+  }
+
+  .total {
+    font-size: 16px;
+    height: 50px;
+  }
+
+  .table-responsive {
+    text-align: center;
+    border: #3d3c42 1px solid;
+  }
+
+  table {
+    width: 60%;
+    border-width: 2px; 
+    border-color: #3d3c42;
+    margin-bottom: 5px;
+    text-align: left;
+    display: inline-table;
+  }
+
+  th {
+    font-size: 14px;
+    height: 50px;
+    text-align: left;
+  }
+
+  .icon {
+    margin-top: 20px;
+    margin-left: 180px;
+  }
+ 
+  .list {
+  text-align: center;
+  }
+
+  .pay-button {
+  margin-left: 350px;
+  margin-bottom: 20px;
+  width: 200px;
+  }
+
+  .order-info {
+    margin-left: 10px;
+  }
