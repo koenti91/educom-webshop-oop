@@ -11,7 +11,6 @@ require_once ("products_service.php");
 $page = getRequestedPage();
 $data = processRequest($page);
 
-var_dump($data);
 showResponsePage($data);
 // Functions
 
