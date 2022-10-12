@@ -7,13 +7,58 @@ class BasicDoc extends HtmlDoc {
     protected $data;
 
     public function __construct($data) {
-        //this->$data = $data;
+        $this->data = $data;
     }
 
-   /* private function showBasicHeader() {
-        echo '<h1 class="'
+    private function showBasicHeader() {
+        echo '<header>';
+        $this->showHeader();
+        echo '</header>';
     }
-    */
-}
+
+    protected function showHeader() {
+        echo 'Basic';
+    }
+
+    private function showMenu () {
+        echo '<div class="menu"><ul class="nav-tabs">';
+        foreach ($this->data['menu'] as $link => $label) {
+            echo '<li><a href="'.$link.'"><'.$label.'</a></li>';
+        }
+        echo '</ul></div>';
+    }
+
+    protected function showContent() {
+        echo '<p>Basic</p>';
+    }
+
+    protected function showGenericErr () {
+        if (isset($this->data["genericErr"])) {
+            echo '<div class="error">'. $this->data ["genericErr"] .'"</div>';
+        }
+    }
+    
+    private function showFooter() {
+        echo '<footer>';
+        echo '<p class="copyright">Copyright &copy; 2022 Koen Tiepel</p>';
+        echo '</footer>';
+    }
+
+    // override HomeDoc
+    protected function showHeadContent() {
+        echo '<title>Project Koen</title>';
+        echo '<link rel="stylesheet" href="css/stylesheet.css">';
+    }
+    
+    // override HomeDoc
+    protected function showBodyContent() {
+        $this->showBasicHeader();
+        $this->showMenu(); 
+        $this->showGenericErr(); 
+        $this->showContent(); 
+        $this->showFooter(); 
+    }
+
+}  
 
 ?>

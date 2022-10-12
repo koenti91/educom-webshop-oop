@@ -10,6 +10,7 @@ require_once ("products_service.php");
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
+var_dump($data);
 
 showResponsePage($data);
 // Functions
@@ -122,15 +123,18 @@ function processRequest($page) {
     return $data;
 }
 
-function showContent($data) {
+function showResponsePage($data) {
     echo '<div class="error">'.getArrayVar($data, "genericErr").'</div>';
+    $view = NULL;
     switch ($data['page']) {
         case 'home':
-            showHomeContent($data);
+            require_once('views/home.php');
+            $view = new HomeDoc($data);
             break;
 
         case 'about':
-            showAboutContent($data);
+            require_once('views/about.php');
+            $view = new AboutDoc($data);
             break;
 
         case 'contact':
@@ -190,7 +194,7 @@ function showContent($data) {
             showOrderConfirmation($data);
             break;
     }
-}
+} 
 
 function getRequestedPage()
 {
@@ -204,14 +208,6 @@ function getRequestedPage()
         $requested_page = getUrlVar('page','home');
     }
     return $requested_page;
-}
-
-function showResponsePage($data) {
-    
-    beginDocument();
-    showHeadSection($data);
-    showBodySection($data);
-    endDocument();
 }
 
 function getArrayVar($array, $key, $default ='')
@@ -294,7 +290,7 @@ function showHeadSection($data)
     echo '</title> <link rel="stylesheet" href="css/stylesheet.css"> </head>';
 }
 
-function showBodySection($data)
+/*function showBodySection($data)
 {
     echo '<body>';
     showHeader($data);
@@ -302,7 +298,7 @@ function showBodySection($data)
     showContent($data);
     showFooter();
     echo '</body>';
-}
+}*/
 
 function showHeader($data) {   
     echo ' <header>';

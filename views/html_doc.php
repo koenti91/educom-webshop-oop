@@ -23,7 +23,7 @@ class HtmlDoc {
     }
 
     private function showBodyContent() {
-        echo '<h1>Body</h1>';
+        echo '<p>Body<p>';
     }
 
     private function endDocument() {
