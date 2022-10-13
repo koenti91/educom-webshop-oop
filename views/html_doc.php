@@ -12,7 +12,7 @@ class HtmlDoc {
         echo '</head>';
     }
 
-    private function showHeadContent() {
+    protected function showHeadContent() {
         echo '<title>Title</title>';
     }
 
@@ -22,7 +22,7 @@ class HtmlDoc {
         echo '</body>';
     }
 
-    private function showBodyContent() {
+    protected function showBodyContent() {
         echo '<p>Body<p>';
     }
 

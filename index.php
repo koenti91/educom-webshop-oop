@@ -124,16 +124,15 @@ function processRequest($page) {
 }
 
 function showResponsePage($data) {
-    echo '<div class="error">'.getArrayVar($data, "genericErr").'</div>';
     $view = NULL;
     switch ($data['page']) {
         case 'home':
-            require_once('views/home.php');
+            require_once('views/home_doc.php');
             $view = new HomeDoc($data);
             break;
 
         case 'about':
-            require_once('views/about.php');
+            require_once('views/about_doc.php');
             $view = new AboutDoc($data);
             break;
 
@@ -194,6 +193,9 @@ function showResponsePage($data) {
             showOrderConfirmation($data);
             break;
     }
+    if ($view!=NULL) {
+        $view->show();
+    }
 } 
 
 function getRequestedPage()
@@ -223,162 +225,6 @@ function getPostVar($key, $default ='')
 function getUrlVar($key, $default = '')
 {
     return getArrayVar($_GET, $key, $default);
-}
-
-function beginDocument()
-{
-    echo '<!doctype html>
-    <html>';
-}
-
-function showHeadSection($data)
-{
-    echo '<head> <title>';
-    switch ($data['page'])
-    {
-        case 'home':
-            require_once('home.php');
-            showHomeHeader();
-            break;
-        case 'about':
-            require_once('about.php');
-            showAboutHeader();
-            break;
-        case 'contact':
-            require_once('contact.php');
-            showContactHeader();
-            break;
-        case 'register':
-            require_once('register.php');
-            showRegisterHeader();
-            break;
-        case 'login':
-            require_once('login.php');
-            showLoginHeader();
-            break;
-        case 'changepw':
-        case 'changePwConfirmation':
-            require_once('changepw.php');
-            showChangePwHeader();
-            break;
-        case 'webshop':
-        case 'detail':
-            require_once('webshop.php');
-            showWebshopHeader();
-            break;
-        case 'shoppingCart':
-            require_once('shopping_cart.php');
-            showShoppingCartHeader();
-            break;
-        case 'deliveryAddress':
-        case 'newDeliveryAddress':
-            require_once('delivery_address.php');
-            showDeliveryAddressHeader();
-            break;
-        case 'orderConfirmation':
-            require_once('order_confirmation.php');
-            showOrderConfirmationHeader();
-            break;
-        case 'lastCheck':
-            require_once('last_check.php');
-            showLastCheckHeader();
-            break;
-
-        default:
-            echo 'Error: Page NOT found';
-    }
-    echo '</title> <link rel="stylesheet" href="css/stylesheet.css"> </head>';
-}
-
-/*function showBodySection($data)
-{
-    echo '<body>';
-    showHeader($data);
-    showMenu($data);
-    showContent($data);
-    showFooter();
-    echo '</body>';
-}*/
-
-function showHeader($data) {   
-    echo ' <header>';
-    switch ($data['page'])
-    {
-        case 'home':
-            require_once('home.php');
-            showHomeHeader();
-            break;
-        case 'about':
-            require_once('about.php');
-            showAboutHeader();
-            break;
-        case 'contact':
-            require_once('contact.php');
-            showContactHeader();
-            break;
-        case 'register':
-            require_once('register.php');
-            showRegisterHeader();
-            break;
-        case 'login':
-            require_once('login.php');
-            showLoginHeader();
-            break;
-        case 'changepw':
-        case 'changePwConfirmation':
-            require_once('changepw.php');
-            showChangePwHeader();
-            break;
-        case 'webshop':
-        case 'detail':
-            require_once('webshop.php');
-            showWebshopHeader();
-            break;
-        case 'shoppingCart':
-            require_once('shopping_cart.php');
-            showShoppingCartHeader();
-            break;
-        case 'deliveryAddress':
-        case 'newDeliveryAddress':
-            require_once('delivery_address.php');
-            showDeliveryAddressHeader();
-            break;
-        case 'orderConfirmation':
-            require_once('order_confirmation.php');
-            showOrderConfirmationHeader();
-            break;
-        case 'lastCheck':
-            require_once('last_check.php');
-            showLastCheckHeader();
-            break;
-        default:
-            echo 'Error: Page not found';
-    }
-    echo '</header>';
-}
-
-function showMenu($data) {
-    echo '<div class="menu"><ul class="nav-tabs">';
-    foreach($data['menu'] as $link => $label) {
-        echo showMenuItem($link, $label);
-    }
-    echo '</ul></div>';
-}
-
-function showMenuItem($page, $label) {
-    return '<li><a href="index.php?page='.$page.'">'.$label.'</a></li>';
-}
-
-function showFooter()
-{
-    echo '<footer>';
-    echo '<p class="copyright">&copy; 2022 Koen Tiepel</p>';
-    echo '</footer>';
-}
-
-function endDocument()
-{
-    echo '</html>';
 }
 
  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {

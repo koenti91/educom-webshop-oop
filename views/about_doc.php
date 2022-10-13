@@ -5,7 +5,6 @@ class AboutDoc extends BasicDoc {
 
 protected function showHeader () {
     echo 'Over Mij';
-    
 }
 
 function showContent () {
