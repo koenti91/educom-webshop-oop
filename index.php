@@ -137,7 +137,8 @@ function showResponsePage($data) {
             break;
 
         case 'contact':
-            showContactForm($data);
+            require_once('views/contact_doc.php');
+            $view = new ContactDoc($data);
             break;
 
         case 'thanks':
@@ -145,11 +146,14 @@ function showResponsePage($data) {
             break;
 
         case 'login':
-            showLoginForm($data);
+            require_once('views/login_doc.php');
+            $view = new LoginDoc($data);
             break;
 
         case 'register':
             showRegisterForm($data);
+            require_once('views/register_doc.php');
+            $view = new RegisterDoc($data);
             break;
 
         case'changepw':

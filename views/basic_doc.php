@@ -32,9 +32,9 @@ class BasicDoc extends HtmlDoc {
         echo '<p>Basic</p>';
     }
 
-    /*protected function showGenericErr() {
-        echo '<div class="error">'.getArrayVar($this->data, "genericErr").'</div>';
-    }*/
+    protected function showGenericErr() {
+        echo '<div class="error">'.(array_key_exists('genericErr', $this->data) ? $this->data['genericErr'] : '') .'</div>';
+    }
     
     private function showFooter() {
         echo '<footer>';
@@ -54,7 +54,7 @@ class BasicDoc extends HtmlDoc {
     protected function showBodyContent() {
         $this->showBasicHeader();
         $this->showMenu(); 
-        //$this->showGenericErr(); 
+        $this->showGenericErr(); 
         $this->showContent(); 
         $this->showFooter(); 
     }
