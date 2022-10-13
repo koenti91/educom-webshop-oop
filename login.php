@@ -8,7 +8,7 @@ function showLoginForm($data) {
     echo '
     <h3> Login</h3>
 
-    <form action="index.php?page=home" method="post">
+    <form action="index.php" method="post">
 
     <fieldset>
       <label for="email"><b>E-mailadres: </b></label>
