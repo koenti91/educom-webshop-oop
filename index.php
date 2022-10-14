@@ -152,17 +152,18 @@ function showResponsePage($data) {
             break;
 
         case 'register':
-            showRegisterForm($data);
             require_once('views/register_doc.php');
             $view = new RegisterDoc($data);
             break;
 
         case'changepw':
-            showChangePwForm($data);
+            require_once('views/change_pw_doc.php');
+            $view = new ChangePwDoc($data);
             break;
             
         case 'changePwConfirmation':
-            showChangePwConfirmationMessage($data);
+            require_once('views/change_pw_confirmation.php');
+            $view = new ChangePwConfirmDoc($data);
             break;
 
         case 'webshop':
