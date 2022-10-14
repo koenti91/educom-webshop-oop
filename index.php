@@ -142,7 +142,8 @@ function showResponsePage($data) {
             break;
 
         case 'thanks':
-            showContactThanks($data);
+            require_once('views/contact_thanks_doc.php');
+            $view = new ContactThanksDoc($data);
             break;
 
         case 'login':

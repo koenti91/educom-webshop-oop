@@ -8,8 +8,6 @@ class ContactDoc extends FormsDoc {
     }
     
     protected function showContent(){
-        define("GENDERS", array("sir" => "De heer", "madam" => "Mevrouw", "other" => "Anders"));
-        define("PREFERRED", array("email" => "E-mail", "phone" => "Telefoon", "pidgeon" => "Postduif"));
 
         echo '<fieldset>
             <label for="gender"><b>Aanhef:</b></label>
@@ -45,9 +43,8 @@ class ContactDoc extends FormsDoc {
                         if ($this->data["preferred"]==$preferred_key) { echo "checked";}
                         echo ' value="'.$preferred_key.'"> ' . PHP_EOL . '<label for="pref-' . $preferred_key . '" class="option">'.$preferred_value.'</label>' . PHP_EOL; 
                     }
-                echo'     
-                <span class="error">* ' . $this->data["preferredErr"] . '</span>
-                <br>
+            echo' <span class="error">* ' . $this->data["preferredErr"] . '</span>
+                    <br>
 
                 <label for="question"><b>Opmerking: </b></label>
                 <textarea type="text" id="question" name="question" maxlength="1000" placeholder="Iets:)">' . $this->data["question"] . '</textarea>

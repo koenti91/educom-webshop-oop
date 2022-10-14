@@ -1,5 +1,6 @@
 <?php 
 require_once "basic_doc.php";
+require_once "constants.php";
 
 class FormsDoc extends BasicDoc {
 
@@ -8,6 +9,6 @@ class FormsDoc extends BasicDoc {
         $this->showContent();
         echo '</form>';
     }
-    
+
 }
 ?>
