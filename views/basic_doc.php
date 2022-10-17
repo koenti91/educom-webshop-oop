@@ -1,6 +1,9 @@
 <?php
 
 require_once "html_doc.php";
+require_once "../products_service.php";
+require_once "../session_manager.php";
+require_once "../db_repository.php";
 
 class BasicDoc extends HtmlDoc {
     

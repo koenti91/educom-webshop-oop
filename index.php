@@ -10,7 +10,6 @@ require_once ("products_service.php");
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
-var_dump($data);
 
 showResponsePage($data);
 // Functions
@@ -167,17 +166,18 @@ function showResponsePage($data) {
             break;
 
         case 'webshop':
-            showWebshopContent($data);
+            require_once('views/webshop_doc.php');
+            $view = new WebshopDoc($data);
             break;
 
         case 'detail':
-            require_once('detail.php');
-            showDetailContent($data);
+            require_once('views/detail_doc.php');
+            $view = new DetailDoc($data);
             break;
 
         case 'shoppingCart':
-            require_once('shopping_cart.php');
-            showShoppingCart($data);
+            require_once('views/shopping_cart_doc.php');
+            $view = new ShoppingCartDoc($data);
             break;
        
         case 'deliveryAddress':
@@ -195,8 +195,8 @@ function showResponsePage($data) {
             break;
 
         case 'orderConfirmation':
-            require_once('order_confirmation.php');
-            showOrderConfirmation($data);
+            require_once('views/order_confirmation_doc.php');
+            $view = new OrderConfirmationDoc($data);
             break;
     }
     if ($view!=NULL) {

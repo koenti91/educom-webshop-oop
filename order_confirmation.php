@@ -1,7 +1,7 @@
 <?php
 
 function showOrderConfirmationHeader() {
-    echo '<h3>Bestelling bevestigd!</h3>';
+    echo 'Bestelling bevestigd!';
 }
 
 function showOrderConfirmation() {
