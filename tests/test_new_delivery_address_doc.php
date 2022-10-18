@@ -1,5 +1,5 @@
 <?php
-require_once "../views/delivery_address_doc.php";
+require_once "../views/new_delivery_address_doc.php";
 
 $product = array(
     "name" => "Stussy Beanie", 
@@ -9,9 +9,9 @@ $product = array(
     "filename" => "stussyhat.png"
 );
 
-
-    
-
+$address = array(
+    "address" => "Zaanstraat 1", "zipCode" => "1234AA", "city" => "Amsterdam", "phone" => "123456789"
+);
 
 $data = array ( 'page' => 'Home', 
                 'menu' => array("home" => "Home", "contact" => "Contact"),
@@ -22,8 +22,7 @@ $data = array ( 'page' => 'Home',
                 'name' => 'Henk', 'nameErr' => 'onbekend', 'email' => 'henk@henk.nl',
                 'emailErr' => 'onbekend', 'password' => 'Hallo123.', 'passwordErr' => 'onbekend',
                 'passwordRepeat' => 'Hallo123.', 'passwordRepeatErr' => 'onbekend', 'username' => 'Henk',
-                'user_email' => 'henk@gmail.com', "address" => "Zaanstraat 1", "zipCode" => "1234AA", 
-                "city" => "Amsterdam", "phone" => "123456789",
+                'user_email' => 'henk@gmail.com',
                 
                 'addresses' => array($address, $address)
 
@@ -31,7 +30,7 @@ $data = array ( 'page' => 'Home',
                 
 var_dump($data);
 
-$view = new DeliveryAddressDoc($data);
+$view = new NewDeliveryAddressDoc($data);
 
 $view  -> show();
 

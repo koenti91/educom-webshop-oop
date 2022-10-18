@@ -1,7 +1,7 @@
 <?php
 
 function showLastCheckHeader() {
-    echo '<h3> Bestelgegevens </h3>';
+    echo 'Bestelgegevens';
 }
 
 function showLastCheckContent($data) {

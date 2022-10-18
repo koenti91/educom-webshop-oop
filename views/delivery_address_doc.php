@@ -13,9 +13,9 @@ class DeliveryAddressDoc extends BasicDoc {
         echo '<h3> Jouw gegevens: </h3>';
         
         echo '<fieldset>';
-        echo 'Naam: '.$data['user']["name"];
+        echo 'Naam: '.$this->data['username'];
         echo '<br>';
-        echo 'E-mailadres: '.$data['user']["email"];
+        echo 'E-mailadres: '.$this->$data['user_email'];
         echo '<br>';
         echo '</fieldset>';
     

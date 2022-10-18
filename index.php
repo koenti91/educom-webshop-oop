@@ -181,12 +181,13 @@ function showResponsePage($data) {
             break;
        
         case 'deliveryAddress':
-            require_once('delivery_address.php');
-            chooseDeliveryAddress($data);
+            require_once('views/delivery_address_doc.php');
+            $view = new DeliveryAddressDoc($data);
             break;
 
         case 'newDeliveryAddress':
-            addNewDeliveryAddress($data);
+            require_once('views/new_delivery_address_doc.php');
+            $view = new NewDeliveryAddressDoc($data);
             break;
         
         case 'lastCheck':
@@ -203,36 +204,6 @@ function showResponsePage($data) {
         $view->show();
     }
 } 
-
-function getRequestedPage()
-{
-    $requested_type = $_SERVER['REQUEST_METHOD'];
-    if ($requested_type == 'POST') 
-    {
-        $requested_page = getPostVar('page','home');
-    }
-    else
-    {
-        $requested_page = getUrlVar('page','home');
-    }
-    return $requested_page;
-}
-
-function getArrayVar($array, $key, $default ='')
-{
-    return isset($array[$key]) ? $array[$key] : $default;
-}
-
-function getPostVar($key, $default ='')
-    {    
-    return getArrayVar($_POST, $key, $default);
-}
-
-function getUrlVar($key, $default = '')
-{
-    return getArrayVar($_GET, $key, $default);
-}
-
  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
     if (!isUserLoggedIn()) {
         return;
