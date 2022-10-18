@@ -1,6 +1,6 @@
 <?php
 require_once "../views/new_delivery_address_doc.php";
-
+require_once "../get_var.php";
 $product = array(
     "name" => "Stussy Beanie", 
     "id" => "1", 

@@ -18,6 +18,7 @@ $user = array(
 
 $data = array ( 'page' => 'Home', 
                 'menu' => array("home" => "Home", "contact" => "Contact"),
+                'canOrder' => true,
                 'cartRows' => array($row, $row),
                 'name' => 'Henk', 'nameErr' => 'onbekend', 'email' => 'henk@henk.nl',
                 'emailErr' => 'onbekend', 'password' => 'Hallo123.', 'passwordErr' => 'onbekend',

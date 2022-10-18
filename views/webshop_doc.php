@@ -25,7 +25,7 @@ class WebshopDoc extends ProductDoc {
         }
         echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="100px">';
         echo '<p> &euro;'.$product['price'] . '</p></a>';
-        $this -> addActionForm("add-to-cart", "Toevoegen aan mandje", "webshop", $product['id'], true);
+        $this -> addActionForm("add-to-cart", "Toevoegen", "webshop", $product['id'], true);
         echo '</div>';
     }
 }

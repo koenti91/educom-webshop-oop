@@ -7,7 +7,7 @@ class ContactDoc extends FormsDoc {
         echo 'Contactformulier';
     }
     
-    protected function showContent(){
+    protected function showForm(){
 
         echo '<fieldset>
             <label for="gender"><b>Aanhef:</b></label>

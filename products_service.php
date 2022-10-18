@@ -35,14 +35,14 @@ function handleActionForm() {
     $action = getPostVar("action");
     switch ($action) {
     case "add-to-cart":
-        $productId = getPostVar("product-id");
+        $productId = getPostVar("productId");
         $quantity = getPostVar("quantity");
 
         addToCart($productId, $quantity);
         break;
 
     case "delete":
-        $productId = getPostVar("product-id");
+        $productId = getPostVar("productId");
         deleteFromCart($productId);
         break;
     

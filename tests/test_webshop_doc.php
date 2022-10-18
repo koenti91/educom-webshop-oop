@@ -11,6 +11,7 @@ $product = array(
 
 $data = array ( 'page' => 'Home', 
                 'menu' => array("home" => "Home", "contact" => "Contact"),
+                'canOrder' => true,
                 'products' => array(
                     $product,
                     $product

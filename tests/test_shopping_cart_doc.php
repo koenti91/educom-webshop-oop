@@ -1,7 +1,7 @@
 <?php
 require_once "../views/shopping_cart_doc.php";
 
-$product = array(
+$cartRows = array(
     "name" => "Stussy Beanie", 
     "id" => "1", 
     "description" => "Stussy Big Stock Cuff Beanie",
@@ -11,9 +11,10 @@ $product = array(
 
 $data = array ( 'page' => 'Home', 
                 'menu' => array("home" => "Home", "contact" => "Contact"),
+                'canOrder' => true,
                 'products' => array(
-                    $product,
-                    $product
+                    $cartRow,
+                    $cartRow
                 ),
                 'name' => 'Henk', 'nameErr' => 'onbekend', 'email' => 'henk@henk.nl',
                 'emailErr' => 'onbekend', 'password' => 'Hallo123.', 'passwordErr' => 'onbekend',

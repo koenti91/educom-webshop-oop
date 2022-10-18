@@ -6,16 +6,31 @@ require_once ("constants.php");
 require_once ("session_manager.php");
 require_once ("validations.php");
 require_once ("products_service.php");
+require_once ("get_var.php");
 
 // Main
 $page = getRequestedPage();
 $data = processRequest($page);
-
+var_dump($data);
 showResponsePage($data);
 // Functions
 
 function logError($msg) {
     echo "LOG TO SERVER: " . $msg;
+}
+
+function getRequestedPage()
+{
+    $requested_type = $_SERVER['REQUEST_METHOD'];
+    if ($requested_type == 'POST') 
+    {
+        $requested_page = getPostVar('page','home');
+    }
+    else
+    {
+        $requested_page = getUrlVar('page','home');
+    }
+    return $requested_page;
 }
 
 function processRequest($page) {
@@ -59,17 +74,20 @@ function processRequest($page) {
         case 'webshop':
             handleActionForm();
             $data = getWebshopProducts();
+            $data['cart'] = getShoppingCart(); 
             break;
 
         case 'detail':
             handleActionForm();
             $id = getUrlVar("id");
+            $data['cart'] = getShoppingCart(); 
             $data = getProductDetails($id);
             break;
 
         case 'shoppingCart':
             handleActionForm();
             $data = getShoppingCartRows();
+            $data['cart'] = getShoppingCart(); 
             break;
 
         case 'deliveryAddress':
@@ -109,6 +127,7 @@ function processRequest($page) {
     }
 
     $data['page'] = $page;
+    $data['canOrder'] = isUserLoggedIn();
     $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
                     'webshop' => 'Shop Headwear');
     if(isUserLoggedIn()) {
@@ -191,8 +210,8 @@ function showResponsePage($data) {
             break;
         
         case 'lastCheck':
-            require_once('last_check.php');
-            showLastCheckContent($data);
+            require_once('views/last_check_doc.php');
+            $view = new LastCheckDoc($data);
             break;
 
         case 'orderConfirmation':

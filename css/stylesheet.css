@@ -172,7 +172,7 @@
   }
 
   .set-quantity {
-    width: 20px;
+    width: 40px;
     font-size: 10px;
     margin-bottom: 5px;
     text-align: center;
@@ -181,7 +181,7 @@
   }
 
   .btn-btn {
-    font-size: 8px;
+    font-size: 10px;
     background-color: #a6d1e6;
     border-radius: 5px;
     position: relative;

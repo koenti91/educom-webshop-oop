@@ -2,13 +2,13 @@
 require_once "basic_doc.php";
 require_once "constants.php";
 
-class FormsDoc extends BasicDoc {
+abstract class FormsDoc extends BasicDoc {
 
-    private function showForm() {
+    protected function showContent() {
         echo '<form method="post" action="index.php">';
-        $this->showContent();
+        $this->showForm();
         echo '</form>';
     }
-
+    protected abstract function showForm();
 }
 ?>

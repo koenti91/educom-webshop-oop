@@ -6,7 +6,7 @@ class LoginDoc extends FormsDoc {
         echo 'Inloggen';
     }
 
-    protected function showContent() {
+    protected function showForm() {
         echo ' <fieldset>
         <label for="email"><b>E-mailadres: </b></label>
         <input class="email" type="email" name="email" placeholder="Vul je e-mailadres in." maxlength="60" value="' . $this->data["email"] . '" required>

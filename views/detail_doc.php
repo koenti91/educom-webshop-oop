@@ -8,7 +8,7 @@ class DetailDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        $product = $this->data['products'];
+        $product = $this->data['product'];
         echo '<div class="list">';
         $this ->showProductDetail($product);
         echo '</div>';  
@@ -19,7 +19,7 @@ class DetailDoc extends ProductDoc {
         echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="170px">'; 
         echo '<p> €'.$product['price'] . '</p>';
         echo '<p>'.$product['description'].'</p>';
-        $this ->addActionForm("add-to-cart", "Toevoegen aan mandje", "webshop", $product['id'], true);
+        $this ->addActionForm("add-to-cart", "Toevoegen", "webshop", $product['id'], true);
     }
 }
 

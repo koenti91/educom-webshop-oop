@@ -6,7 +6,7 @@ class RegisterDoc extends FormsDoc {
         echo 'Registreren';
     }
 
-    protected function showContent() {
+    protected function showForm() {
         echo '<fieldset>
         <label for="name"><b>Naam: </b></label>
         <input class="name" type="text" name="name" value="'. $this->data["name"] .'" placeholder="Henk de Vries" maxlength="50" required>
