@@ -1,7 +1,7 @@
 <?php
 
 require_once "html_doc.php";
-
+require_once "controller/PageController.php";
 
 class BasicDoc extends HtmlDoc {
     

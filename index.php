@@ -6,32 +6,33 @@ require_once ("constants.php");
 require_once ("session_manager.php");
 require_once ("validations.php");
 require_once ("products_service.php");
+require_once ("controllers/PageController.php");
 require_once ("get_var.php");
 
 // Main
-$page = getRequestedPage();
 $data = processRequest($page);
+$controller = new PageController();
+$controller -> handleRequest();
 var_dump($data);
-showResponsePage($data);
 // Functions
 
 function logError($msg) {
     echo "LOG TO SERVER: " . $msg;
 }
 
-function getRequestedPage()
-{
-    $requested_type = $_SERVER['REQUEST_METHOD'];
-    if ($requested_type == 'POST') 
-    {
-        $requested_page = getPostVar('page','home');
-    }
-    else
-    {
-        $requested_page = getUrlVar('page','home');
-    }
-    return $requested_page;
-}
+// function getRequestedPage()
+// {
+//     $requested_type = $_SERVER['REQUEST_METHOD'];
+//     if ($requested_type == 'POST') 
+//     {
+//         $requested_page = getPostVar('page','home');
+//     }
+//     else
+//     {
+//         $requested_page = getUrlVar('page','home');
+//     }
+//     return $requested_page;
+// }
 
 function processRequest($page) {
     switch ($page) {
@@ -141,7 +142,7 @@ function processRequest($page) {
     return $data;
 }
 
-function showResponsePage($data) {
+/*function showResponsePage($data) {
     $view = NULL;
     switch ($data['page']) {
         case 'home':
@@ -222,7 +223,8 @@ function showResponsePage($data) {
     if ($view!=NULL) {
         $view->show();
     }
-} 
+} */
+
  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
     if (!isUserLoggedIn()) {
         return;
