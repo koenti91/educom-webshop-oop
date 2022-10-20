@@ -10,7 +10,7 @@ class ShoppingCartDoc extends ProductDoc {
     protected function showContent() {
         echo '<img class="icon" src="Images/shoppingcart.jpg" alt="Winkelwagen" width="100px" />';
 
-        if (!empty($this->data['cartRows'])) {
+        if (!empty($this->model['cartRows'])) {
             
             $this->showCartTable(true);
             $this->showDeliveryPageButton();

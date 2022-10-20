@@ -10,10 +10,10 @@ require_once ("controllers/PageController.php");
 require_once ("get_var.php");
 
 // Main
-$data = processRequest($page);
+// $data = processRequest($page);
 $controller = new PageController();
 $controller -> handleRequest();
-var_dump($data);
+
 // Functions
 
 function logError($msg) {
@@ -34,113 +34,113 @@ function logError($msg) {
 //     return $requested_page;
 // }
 
-function processRequest($page) {
-    switch ($page) {
-        case "login":
-            $data = validateLogin();
-            if ($data['valid']) {
-                doLoginUser($data['name'], $data['userId']);
-                $page = 'home';
-            }
-            break;
+// function processRequest($page) {
+//     switch ($page) {
+//         case "login":
+//             $data = validateLogin();
+//             if ($data['valid']) {
+//                 doLoginUser($data['name'], $data['userId']);
+//                 $page = 'home';
+//             }
+//             break;
 
-        case 'logout':
-            doLogoutUser();
-            $page = 'home';
-            break;
+//         case 'logout':
+//             doLogoutUser();
+//             $page = 'home';
+//             break;
 
-        case 'contact':
-            $data = validateContact();
-            if($data['valid']) {
-                $page = 'thanks';
-            }
-            break;
+//         case 'contact':
+//             $data = validateContact();
+//             if($data['valid']) {
+//                 $page = 'thanks';
+//             }
+//             break;
             
-        case 'register':
-            $data = validateRegister();
-            if ($data['valid']) {
-                storeUser($data["name"], $data["email"], $data["password"]);
-                $page = 'login';
-            }
-            break;
+//         case 'register':
+//             $data = validateRegister();
+//             if ($data['valid']) {
+//                 storeUser($data["name"], $data["email"], $data["password"]);
+//                 $page = 'login';
+//             }
+//             break;
 
-        case 'changepw':
-            $data = validateChangePassword();
-            if ($data['valid']) {
-                storeNewPassword(getLoggedInUserId(), $data["newPassword"]);
-                $page = 'changePwConfirmation';
-            }
-            break;
+//         case 'changepw':
+//             $data = validateChangePassword();
+//             if ($data['valid']) {
+//                 storeNewPassword(getLoggedInUserId(), $data["newPassword"]);
+//                 $page = 'changePwConfirmation';
+//             }
+//             break;
     
-        case 'webshop':
-            handleActionForm();
-            $data = getWebshopProducts();
-            $data['cart'] = getShoppingCart(); 
-            break;
+//         case 'webshop':
+//             handleActionForm();
+//             $data = getWebshopProducts();
+//             $data['cart'] = getShoppingCart(); 
+//             break;
 
-        case 'detail':
-            handleActionForm();
-            $id = getUrlVar("id");
-            $data['cart'] = getShoppingCart(); 
-            $data = getProductDetails($id);
-            break;
+//         case 'detail':
+//             handleActionForm();
+//             $id = getUrlVar("id");
+//             $data['cart'] = getShoppingCart(); 
+//             $data = getProductDetails($id);
+//             break;
 
-        case 'shoppingCart':
-            handleActionForm();
-            $data = getShoppingCartRows();
-            $data['cart'] = getShoppingCart(); 
-            break;
+//         case 'shoppingCart':
+//             handleActionForm();
+//             $data = getShoppingCartRows();
+//             $data['cart'] = getShoppingCart(); 
+//             break;
 
-        case 'deliveryAddress':
-            require_once('delivery_address.php');
-            $data = validateDeliveryAddressSelection();
-            $userId = getLoggedInUserID();
-            if ($data['valid']) {
-                if ($data['deliveryAddressId'] == 0) {
-                    $page = 'newDeliveryAddress';
-                } else {
-                    $page = "lastCheck";
-                    $data = array_merge($data, findDeliveryById($userId, $data['deliveryAddressId']));
-                    $data["user"] = findUserByID($userId);
-                    $data = array_merge($data, getShoppingCartRows());
-                }
-            }
-            else {
-                $data = array_merge($data, getDeliveryAddressesData($userId));
-            }
-            break;
+//         case 'deliveryAddress':
+//             require_once('delivery_address.php');
+//             $data = validateDeliveryAddressSelection();
+//             $userId = getLoggedInUserID();
+//             if ($data['valid']) {
+//                 if ($data['deliveryAddressId'] == 0) {
+//                     $page = 'newDeliveryAddress';
+//                 } else {
+//                     $page = "lastCheck";
+//                     $data = array_merge($data, findDeliveryById($userId, $data['deliveryAddressId']));
+//                     $data["user"] = findUserByID($userId);
+//                     $data = array_merge($data, getShoppingCartRows());
+//                 }
+//             }
+//             else {
+//                 $data = array_merge($data, getDeliveryAddressesData($userId));
+//             }
+//             break;
 
-        case 'newDeliveryAddress':
-            $userId = getLoggedInUserID();
-            $data = validateDeliveryAddress($userId);
-            if($data['valid']) {
-                $data["deliveryAddressId"] = storeDeliveryAddress($userId, $data);
-                $data["user"] = findUserByID($userId);
-                $data = array_merge($data, getShoppingCartRows());
-                $page = 'lastCheck';
-            }
-            break;
+//         case 'newDeliveryAddress':
+//             $userId = getLoggedInUserID();
+//             $data = validateDeliveryAddress($userId);
+//             if($data['valid']) {
+//                 $data["deliveryAddressId"] = storeDeliveryAddress($userId, $data);
+//                 $data["user"] = findUserByID($userId);
+//                 $data = array_merge($data, getShoppingCartRows());
+//                 $page = 'lastCheck';
+//             }
+//             break;
 
-        case 'orderConfirmation':
-            require_once ('last_check.php');
-            $data = handleActionForm();
-            break;    
-    }
+//         case 'orderConfirmation':
+//             require_once ('last_check.php');
+//             $data = handleActionForm();
+//             break;    
+//     }
 
-    $data['page'] = $page;
-    $data['canOrder'] = isUserLoggedIn();
-    $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
-                    'webshop' => 'Shop Headwear');
-    if(isUserLoggedIn()) {
-        $data['menu'] ['shoppingCart'] = 'Winkelmand';
-        $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
-        $data['menu'] ['changepw'] = 'Verander wachtwoord';
-    } else {
-        $data['menu'] ['login'] = 'Login';
-        $data['menu'] ['register'] = 'Registreren';
-    }
-    return $data;
-}
+//     $data['page'] = $page;
+//     $data['canOrder'] = isUserLoggedIn();
+//     $data['menu'] = array ('home' => 'Home', 'about' => 'About', 'contact' => 'Contact', 
+//                     'webshop' => 'Shop Headwear');
+//     if(isUserLoggedIn()) {
+//         $data['menu'] ['shoppingCart'] = 'Winkelmand';
+//         $data['menu'] ['logout'] = 'Logout ' . getLoggedInUsername();
+//         $data['menu'] ['changepw'] = 'Verander wachtwoord';
+//     } else {
+//         $data['menu'] ['login'] = 'Login';
+//         $data['menu'] ['register'] = 'Registreren';
+//     }
+//     return $data;
+// }
 
 /*function showResponsePage($data) {
     $view = NULL;

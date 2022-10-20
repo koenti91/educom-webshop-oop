@@ -9,14 +9,14 @@ class LoginDoc extends FormsDoc {
     protected function showForm() {
         echo ' <fieldset>
         <label for="email"><b>E-mailadres: </b></label>
-        <input class="email" type="email" name="email" placeholder="Vul je e-mailadres in." maxlength="60" value="' . $this->data["email"] . '" required>
+        <input class="email" type="email" name="email" placeholder="Vul je e-mailadres in." maxlength="60" value="' . $this->model["email"] . '" required>
         <span class="error">*</span>
           <br>
         <label for="password"><b>Wachtwoord: </b></label>
-        <input class="password" type="password" name="password" placeholder="Vul hier je wachtwoord in." value ="' . $this->data["password"] . '"  maxlength="20" required>
+        <input class="password" type="password" name="password" placeholder="Vul hier je wachtwoord in." value ="' . $this->model["password"] . '"  maxlength="20" required>
         <span class="error">*</span>
           <br>
-        <span class="error2">' . $this->data["emailErr"] . '</span>
+        <span class="error2">' . $this->model["emailErr"] . '</span>
           <br>
         <input type="submit" class="submit" value="Login" />
         <input type="hidden" name="page" value="login" />

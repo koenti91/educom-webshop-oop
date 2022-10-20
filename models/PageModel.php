@@ -1,4 +1,6 @@
 <?php
+require_once "MenuItem.php";
+require_once "SessionManager.php";
 
 class PageModel {
     

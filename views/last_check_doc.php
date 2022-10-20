@@ -7,7 +7,7 @@ class LastCheckDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        $user = $this->data['user'];
+        $user = $this->model['user'];
         
         echo '<form method="post" action="index.php">';
         echo '<div class="order-info">';
@@ -16,20 +16,20 @@ class LastCheckDoc extends ProductDoc {
         echo '<br>';
         echo '<b>E-mailadres: </b>'.$user["email"];
         echo '<br>';
-        echo '<b>Telefoonnummer: </b>'.$this->data["phone"];
+        echo '<b>Telefoonnummer: </b>'.$this->model["phone"];
         echo '</fieldset>';
         echo '<fieldset>';
-        echo '<b>Adres: </b>'.$this->data["address"];
+        echo '<b>Adres: </b>'.$this->model["address"];
         echo '<br>';
-        echo '<b>Postcode: </b>'.$this->data["zip_code"];
+        echo '<b>Postcode: </b>'.$this->model["zip_code"];
         echo' <br>';
-        echo '<b>Woonplaats: </b>'.$this->data["city"];
+        echo '<b>Woonplaats: </b>'.$this->model["city"];
         echo '<br>';
         echo '</fieldset>';
         
         echo '<div class="order-info">';
         $this->showCartTable(false);
-        $this->AddActionForm("orderConfirmation", "Bestelling afronden", "orderConfirmation", deliveryAddressId: $this->data["deliveryAddressId"]);
+        $this->AddActionForm("orderConfirmation", "Bestelling afronden", "orderConfirmation", deliveryAddressId: $this->model["deliveryAddressId"]);
         echo '</div>';
         echo '</form>';
     }

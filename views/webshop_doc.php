@@ -8,7 +8,7 @@ class WebshopDoc extends ProductDoc {
     }
 
     protected function showContent () {
-        $products = $this->data['products'];
+        $products = $this->model['products'];
         echo' <div class="product-overview">';
 
         foreach ($products as $product) {

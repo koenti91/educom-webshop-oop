@@ -8,7 +8,7 @@ class DetailDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        $product = $this->data['product'];
+        $product = $this->model['product'];
         echo '<div class="list">';
         $this ->showProductDetail($product);
         echo '</div>';  

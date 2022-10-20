@@ -1,14 +1,13 @@
 <?php
 
 require_once "html_doc.php";
-require_once "controller/PageController.php";
 
 class BasicDoc extends HtmlDoc {
     
-    protected $data;
+    protected $model;
 
-    public function __construct($data) {
-        $this->data = $data;
+    public function __construct($model) {
+        $this->model = $model;
     }
 
     private function showBasicHeader() {
@@ -23,8 +22,8 @@ class BasicDoc extends HtmlDoc {
 
     private function showMenu () {
         echo '<div class="menu"><ul class="nav-tabs">';
-        foreach ($this->data['menu'] as $link => $label) {
-            echo '<li><a href="index.php?page='.$link.'">'.$label.'</a></li>';
+        foreach ($this->model->menu as $menuItem) {
+            $menuItem->showHtmlMenuItem();
         }
         echo '</ul></div>';
     }
@@ -34,7 +33,7 @@ class BasicDoc extends HtmlDoc {
     }
 
     protected function showGenericErr() {
-        echo '<div class="error">'.(array_key_exists('genericErr', $this->data) ? $this->data['genericErr'] : '') .'</div>';
+        echo '<div class="error">'. $this->model->genericErr .'</div>';
     }
     
     private function showFooter() {

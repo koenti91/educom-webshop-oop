@@ -3,12 +3,12 @@ require_once "basic_doc.php";
 
 class ProductDoc extends BasicDoc {
     protected function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false, $deliveryAddressId = null) {
-        if($this->data['canOrder']) {
+        if($this->model['canOrder']) {
             echo '<form method="post" action="index.php">
             <input type="hidden" name="page" value="'.$nextPage.'">
             <input type="hidden" name="action" value="'.$action.'">';
             if ($showQuantity) {
-                $cart = getArrayVar($this->data, 'cart', array());
+                $cart = getArrayVar($this->model, 'cart', array());
                 $currentValue = getArrayVar($cart, $productId, 1);
                 echo '<input type="number" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
             }
@@ -33,7 +33,7 @@ class ProductDoc extends BasicDoc {
                             ' . ($canEdit ? '<th>Verwijder</th>' : '') .'
                         </tr>';
                 
-            foreach($this->data["cartRows"] as $cartRow) {
+            foreach($this->model["cartRows"] as $cartRow) {
                 $this->showCartRow($cartRow, $canEdit);
             }      
                         
@@ -41,14 +41,14 @@ class ProductDoc extends BasicDoc {
                     <td></td>
                     <td><b>Totaal</b></td>
                     <td></td>
-                    <td><b> &euro; '.number_format($this->data['total'] / 100, 2).'</b></td>
+                    <td><b> &euro; '.number_format($this->model['total'] / 100, 2).'</b></td>
                     '.($canEdit ? '<td></td>'  : '') .'
                   </tr>
             </table>
             </div>';
     }
     protected function showCartRow($cartRow, $canEdit) {
-        echo '<tr class="data-row">
+        echo '<tr class="model-row">
             <td><img src="Images/'.$cartRow['filename'].'" alt="'.$cartRow['name'].'" 
             width="50px"/><br>'.$cartRow["name"].'</td>
             <td>';

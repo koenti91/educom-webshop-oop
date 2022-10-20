@@ -1,4 +1,5 @@
 <?php
+require_once "models/PageModel.php";
 
 class PageController {
 
@@ -12,6 +13,7 @@ class PageController {
         $this->getRequest();
         //$this->processRequest();
         $this->showResponsePage();
+        print_r($this->model);
     }
 
     // from client
@@ -19,21 +21,21 @@ class PageController {
         $this->model->getRequestedPage();
     }
 
-    // // business flow code
-    // // private function processRequest() {
-    // //     switch ($this->model->page) {
+    //business flow code
+    private function processRequest() {
+        switch ($this->model->page) {
 
-    // //         case "login":
-    // //             $this->model = new UserModel;
-    // //             $model -> validateLogin();
-    // //             if($model->valid) {
-    // //                 $this->model->doLoginUser();
-    // //                 $this->model->setPage("home");
-    // //             }
-    // //             break;
-    // //         //           
-    // //     }
-    // }
+            case "login":
+                $this->model = new UserModel($this->model);
+                $model -> validateLogin();
+                if($model->valid) {
+                    $this->model->doLoginUser();
+                    $this->model->setPage("home");
+                }
+                break;
+            //           
+        }
+    }
 
     // to client: presentatielaag
     private function showResponsePage() {
@@ -41,11 +43,11 @@ class PageController {
 
         switch ($this->model->page) {
             case "home":
-                require_once ("home_doc.php");
+                require_once ("views/home_doc.php");
                 $view = new HomeDoc($this->model);
                 break;
             case "about":
-                require_once ("about_doc.php");
+                require_once ("views/about_doc.php");
                 $view = new AboutDoc($this->model);
                 break;
         }
