@@ -21,6 +21,7 @@ function authenticateUserByUser($user, $password) {
     }
     return NULL;
 }
+
 function doesUserExist($email) {
     $user = findUserbyEmail($email);
     return !empty($user);

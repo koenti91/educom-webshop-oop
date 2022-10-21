@@ -10,7 +10,7 @@ class UserModel extends PageModel {
     public $passwordErr = '';
     public $passwordRepeat = '';
     public $passwordRepeatErr = '';
-    public $gender= '';
+    public $gender = '';
     public $genderErr = '';
     public $phone= '';
     public $phoneErr = '';
@@ -31,22 +31,23 @@ class UserModel extends PageModel {
         PARENT::__construct($pageModel);
     }
 
-    function testInput() {
-        $this->model = trim($this->model);
-        $this->model = stripslashes($this->model);
-        $this->model = htmlspecialchars($this->model);
-        return $this->model;
+    function testInput($model) {
+        $model = trim($model);
+        $model = stripslashes($model);
+        $model = htmlspecialchars($model);
+        return $model;
     }
 
+    //login user
     public function validateLogin() {
         if ($this->isPost) {
             
-            $email = testInput(getPostVar("email"));
+            $email = testInput($this->getPostVar('email'));
             if (empty($email)) {
                 $emailErr = "Vul je e-mailadres in.";
             }
     
-            $password = testInput(getPostVar("password"));
+            $password = testInput($this->getPostVar("password"));
             if (empty($password)) {
                 $passwordErr = "Vul je gekozen wachtwoord in.";
             }
@@ -67,7 +68,7 @@ class UserModel extends PageModel {
                 }
             }
         }
-        
+
         return array(
                     "email" => $email, 
                     "password" => $password, 
@@ -85,12 +86,83 @@ class UserModel extends PageModel {
         }
 
     public function doLoginUser() {
-        $this->SessionManager->doLoginUser($this->name, $this->userId);
+        $this->SessionManager->loginUser($this->name, $this->userId);
         $this->genericErr= "Succesvol ingelogd!";
     }
 
+    //logout user
     public function doLogoutUser() {
-        //
+        $this->SessionManager->logoutUser($this->name, $this->userId);
+        $this->genericErr= "Succesvol uitgelogd.";
+    }
+
+    //register new user
+    public function validateRegister() {
+        
+        if($this->isPost) {
+            $name = testInput($this->getPostvar("name"));
+            if (empty($name)) {
+                $nameErr = "Naam is verplicht";
+            } 
+            else if (!preg_match("/^[a-zA-Z' ]*$/",$name)) {
+                $nameErr = "Alleen letters en spaties zijn toegestaan."; 
+            }
+            
+            $email = testInput($this->getPostVar("email")); 
+            if (empty($email)) {
+                $emailErr = "E-mail is verplicht";
+            }
+            else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $emailErr = "Vul een correct e-mailadres in.";
+            }
+    
+            $password = testInput($this->getPostvar("password"));
+            if (empty($password)) {
+                $passwordErr = "Vul hier een wachtwoord in.";
+            }
+            else {
+                $errors = array();
+                if (!preg_match('@[A-Z]@', $password)) { 
+                    array_push($errors, "een hoofdletter");
+                }
+               
+                if (!preg_match('@[a-z]@', $password)) {
+                    array_push($errors, "een kleine letter");    
+                }
+                if (!preg_match('@[0-9]@', $password)) {
+                    array_push($errors, "een cijfer");
+                }
+                if (!preg_match('@[^\w]@', $password)) {
+                    array_push($errors, "een speciaal teken");
+                }
+                if (strlen($password) < 8) {
+                    array_push($errors, "acht tekens");
+                }
+                if (!empty($errors)) {
+                    $passwordErr = "Wachtwoord moet tenminste " . implode(", ", $errors) . " bevatten.";
+                }
+            }
+    
+            $passwordRepeat = testInput(getPostvar("password-repeat"));
+            if (empty($passwordRepeat)) {
+                $passwordRepeatErr = "Herhaal hier je gekozen wachtwoord.";
+            }
+            else if ($password != $passwordRepeat) {
+                $passwordRepeatErr = "Je wachtwoorden komen niet overeen.";
+            }
+    
+            if (empty($nameErr) && empty($emailErr) && empty($passwordErr) && empty($passwordRepeatErr)){
+                if (empty(findUserByEmail($email))){
+                    $valid = true;
+                } else {
+                    $emailErr = "E-mailadres is al in gebruik.";
+                }
+            }
+        }
+
+        return array ("name" => $name, "email" => $email, "password" => $password, "passwordRepeat" => $passwordRepeat,
+                        "nameErr" => $nameErr, "emailErr" => $emailErr, "passwordErr" => $passwordErr,
+                        "passwordRepeatErr" => $passwordRepeatErr, "valid" => $valid); 
     }
 }
 ?>

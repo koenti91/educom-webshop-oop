@@ -2,7 +2,7 @@
 
 class SessionManager {
 
-    public function doLoginUser($name, $userId) {
+    public function loginUser($name, $userId) {
         $_SESSION['login'] = $name; 
         $_SESSION['loggedInUserId'] = $userId;
         $_SESSION['shoppingCart'] = array();  // { productIdA => quantity, productIdB => quantity, ... }
@@ -20,7 +20,7 @@ class SessionManager {
         return $_SESSION['loggedInUserId'];
     }
 
-    public function doLogoutUser() {
+    public function logoutUser() {
         unset($_SESSION['login']);
     }
 

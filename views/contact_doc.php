@@ -1,5 +1,6 @@
 <?php 
 require_once "forms_doc.php";
+require_once "constants.php";
 
 class ContactDoc extends FormsDoc {
     protected function showHeader()

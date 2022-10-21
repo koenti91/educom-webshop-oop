@@ -41,11 +41,11 @@ class PageModel {
         $this->page = $newPage;
     }
 
-    private function getUrlVar($key, $default ='') {
+    protected function getUrlVar($key, $default ='') {
         return getArrayVar($_GET, $key, $default);
     }
 
-    private function getPostVar($key, $default ='') {
+    protected function getPostVar($key, $default ='') {
         return getArrayVar($_POST, $key, $default);
     }
 
