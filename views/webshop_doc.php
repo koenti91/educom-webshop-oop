@@ -8,24 +8,23 @@ class WebshopDoc extends ProductDoc {
     }
 
     protected function showContent () {
-        $products = $this->model['products'];
         echo' <div class="product-overview">';
 
-        foreach ($products as $product) {
-            $this-> showWebshopProduct($product);
+        foreach ($this->model->products as $product) {
+            $this->showWebshopProduct($product);
         }
 
         echo '</div>';
     }
 
-    private function showWebshopProduct($product) {
-        echo '<div class="product-list"><a class="shop-products" href="index.php?page=detail&id='.$product['id'].'">';
-        if (isset($product['name'])) {
-            echo '<h4>'.$product['name'].'</h4>';
+    private function showWebshopProduct() {
+        echo '<div class="product-list"><a class="shop-products" href="index.php?page=detail&id='.$this->product->id.'">';
+        if (isset($this->model->product->name)) {
+            echo '<h4>'.$this->model->product->name.'</h4>';
         }
-        echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="100px">';
-        echo '<p> &euro;'.$product['price'] . '</p></a>';
-        $this -> addActionForm("add-to-cart", "Toevoegen", "webshop", $product['id'], true);
+        echo '<img src="Images/'.$this->model->product->filename.'" alt="'.$this->model->product->name.'" width="100px">';
+        echo '<p> &euro;'.$this->product->price . '</p></a>';
+        $this->model-> addActionForm("add-to-cart", "Toevoegen", "webshop", $this->model->product->id, true);
         echo '</div>';
     }
 }

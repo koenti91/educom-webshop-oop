@@ -3,16 +3,16 @@ require_once "basic_doc.php";
 
 class ProductDoc extends BasicDoc {
     protected function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false, $deliveryAddressId = null) {
-        if($this->model['canOrder']) {
+        if($this->model->canOrder) {
             echo '<form method="post" action="index.php">
             <input type="hidden" name="page" value="'.$nextPage.'">
             <input type="hidden" name="action" value="'.$action.'">';
             if ($showQuantity) {
-                $cart = getArrayVar($this->model, 'cart', array());
-                $currentValue = getArrayVar($cart, $productId, 1);
+                $this->cart = getArrayVar($this->model, 'cart', array());
+                $currentValue = getArrayVar($this->cart, $productId, 1);
                 echo '<input type="number" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
             }
-            if (!empty($productId)) {
+            if (!empty($this->productId)) {
                 echo '<input type="hidden" name="productId" value="'.$productId.'">';
             }
             if (!empty($deliveryAddressId)) {

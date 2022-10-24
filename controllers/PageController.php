@@ -106,7 +106,34 @@ class PageController {
                 require_once ("views/change_pw_confirm_doc.php");
                 $view = new ChangePwConfirmDoc($this->model);
                 break;
-            //
+            case "webshop":
+                require_once ("views/webshop_doc.php");
+                $view = new WebshopDoc($this->model);
+                break;
+            case "detail":
+                require_once ("views/detail.doc.php");
+                $view = new DetailDoc($this->model);
+                break;
+            case "shoppingCart":
+                require_once ("views/shopping_cart.php");
+                $view = new ShoppingCartDoc($this->model);
+                break;
+            case "deliveryAddress":
+                require_once ("views/delivery_address_doc.php");
+                $view = new DeliveryAddressDoc($this->model);
+                break;
+            case "newDeliveryAddress":
+                require_once ("views/new_delivery_address_doc.php");
+                $view = new NewDeliveryAddressDoc($this->model);
+                break;
+            case "lastCheck":
+                require_once("views/last_check_doc.php");
+                $view = new LastCheckDoc($this->model);
+                break;
+            case "orderConfirmation":
+                require_once("views/order_confirmation_doc.php");
+                $view = new OrderConfirmationDoc($this->model);
+                break;
         }
         $view->show();
     }

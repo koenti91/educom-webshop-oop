@@ -274,7 +274,7 @@ class UserModel extends PageModel {
                 }
     
             if (empty($this->oldPasswordError) && empty($this->newPasswordErr) && empty($this->repeatNewPasswordErr)){
-                $this->user= authenticateUserByID(getLoggedInUserID(), $this->oldPassword);
+                $this->user=authenticateUserByID($this->sessionManager->getLoggedInUserID(), $this->oldPassword);
                 if (empty($this->user)) {
                     $this->valid = false;
                     $this->oldPasswordErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
