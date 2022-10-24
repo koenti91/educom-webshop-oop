@@ -7,7 +7,7 @@ function authenticateUser($email, $password) {
     return authenticateUserByUser($user, $password);
 }
 
- function authenticateUserByID($userId, $password) {
+function authenticateUserByID($userId, $password) {
     $user = findUserById($userId);
     return authenticateUserByUser($user, $password);
 }

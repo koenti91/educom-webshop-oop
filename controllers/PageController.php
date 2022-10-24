@@ -24,20 +24,48 @@ class PageController {
     //business flow code
     private function processRequest() {
         switch ($this->model->page) {
-
             case "login":
+                require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
                 $this->model -> validateLogin();
                 if($this->model->valid) {
                     $this->model->doLoginUser();
-                    $this->page->setPage("home");
+                    $this->model->setPage("home");
                 }
                 break;
             case "logout":
+                require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
                 $this->model -> doLogoutUser();
-                $this->page -> setPage("logout");
-            //           
+                $this->model -> setPage("home");
+                break;
+            case "contact":
+                require_once "models/UserModel.php";
+                $this->model = new UserModel($this->model);
+                $this->model -> validateContact();
+                if($this->model->valid) {
+                    $this->model->setPage("thanks");
+                }
+                break;
+            case "register":
+                require_once "models/UserModel.php";
+                $this->model = new UserModel($this->model);
+                $this->model -> validateRegister();
+                if($this->model->valid) {
+                    $this->model->storeUser();
+                    $this->model->setPage("login");
+                }
+                break;
+             case "changepw":
+                require_once "models/UserModel.php";
+                $this->model = new UserModel($this->model);
+                $this->model -> validateChangePassword();
+                if($this->model->valid) {
+                    $this->model->storeNewPassword();
+                    $this->model->setPage("changePwConfirmation");
+                }
+                break;
+            //
         }
     }
 
@@ -59,7 +87,7 @@ class PageController {
                 $view = new ContactDoc($this->model);
                 break;
             case "thanks":
-                require_once ("views/contact_thanks.php");
+                require_once ("views/contact_thanks_doc.php");
                 $view = new ContactThanksDoc($this->model);
                 break;
             case "register":

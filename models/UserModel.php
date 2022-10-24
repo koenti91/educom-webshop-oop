@@ -31,68 +31,70 @@ class UserModel extends PageModel {
         PARENT::__construct($pageModel);
     }
 
-    function testInput($model) {
-        $model = trim($model);
-        $model = stripslashes($model);
-        $model = htmlspecialchars($model);
-        return $model;
+    function testInput($string) {
+        $string = trim($string);
+        $string = stripslashes($string);
+        $string = htmlspecialchars($string);
+        return $string;
     }
 
     //login user
     public function validateLogin() {
         if ($this->isPost) {
             
-            $email = testInput($this->getPostVar('email'));
-            if (empty($email)) {
-                $emailErr = "Vul je e-mailadres in.";
+            $this->email = testInput($this->getPostVar('email'));
+            if (empty($this->email)) {
+                $this->emailErr = "Vul je e-mailadres in.";
             }
     
             $password = testInput($this->getPostVar("password"));
-            if (empty($password)) {
-                $passwordErr = "Vul je gekozen wachtwoord in.";
+            if (empty($this->password)) {
+                $this->passwordErr = "Vul je gekozen wachtwoord in.";
             }
     
-            if (empty($emailErr) && empty($passwordErr)) {
+            if (empty($this->emailErr) && empty($this->passwordErr)) {
                 $this->valid = true;
             }
     
             if ($this->valid) {
-                $this->user = authenticateUser ($email, $password);
+                $this->user->authenticateUser();
                 if (empty($this->user)) {
-                    $valid = false;
-                    $emailErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
-                } else {
-                    $email = $this->user->email;
-                    $name = $this->user->name;
-                    $userId = $this->user->id;
+                    $this->valid = false;
+                    $this->emailErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
+                }
+                else {
+                    $this->user->email;
+                    $this->user->name;
+                    $this->user->id;
                 }
             }
         }
-
-        return array(
-                    "email" => $email, 
-                    "password" => $password, 
-                    "name" => $name,
-                    "userId" => $userId,
-                    "emailErr" => $emailErr, 
-                    "passwordErr" => $passwordErr, 
-                    "valid" => $valid);
     }
 
     private function authenticateUser () {
             require_once "db_repository.php";
-            $user = findUserbyEmail($this->email);
+            $this->user = findUserbyEmail($this->email);
             return authenticateUserByUser($this->user, $this->password);
         }
 
+    private function authenticateUserByUser() {
+        if (empty($this->user)) {
+            return NULL;
+        }
+        if (password_verify($this->password, $this->user->password)) {
+            return $this->user;
+        }
+        return NULL;
+        }
+
     public function doLoginUser() {
-        $this->SessionManager->loginUser($this->name, $this->userId);
+        $this->sessionManager->loginUser($this->name, $this->userId);
         $this->genericErr= "Succesvol ingelogd!";
     }
 
     //logout user
     public function doLogoutUser() {
-        $this->SessionManager->logoutUser($this->name, $this->userId);
+        $this->sessionManager->logoutUser($this->name, $this->userId);
         $this->genericErr= "Succesvol uitgelogd.";
     }
 
@@ -100,69 +102,200 @@ class UserModel extends PageModel {
     public function validateRegister() {
         
         if($this->isPost) {
-            $name = testInput($this->getPostvar("name"));
-            if (empty($name)) {
-                $nameErr = "Naam is verplicht";
+            $this->name = testInput($this->getPostvar("name"));
+            if (empty($this->name)) {
+                $this->nameErr = "Naam is verplicht";
             } 
-            else if (!preg_match("/^[a-zA-Z' ]*$/",$name)) {
-                $nameErr = "Alleen letters en spaties zijn toegestaan."; 
+            else if (!preg_match("/^[a-zA-Z' ]*$/",$this->name)) {
+                $this->nameErr = "Alleen letters en spaties zijn toegestaan."; 
             }
             
-            $email = testInput($this->getPostVar("email")); 
-            if (empty($email)) {
-                $emailErr = "E-mail is verplicht";
+            $this->email = testInput($this->getPostVar("email")); 
+            if (empty($this->email)) {
+                $this->emailErr = "E-mail is verplicht";
             }
-            else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $emailErr = "Vul een correct e-mailadres in.";
+            else if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                    $this->emailErr = "Vul een correct e-mailadres in.";
             }
     
-            $password = testInput($this->getPostvar("password"));
-            if (empty($password)) {
-                $passwordErr = "Vul hier een wachtwoord in.";
+            $this->password = testInput($this->getPostvar("password"));
+            if (empty($this->password)) {
+                $this->passwordErr = "Vul hier een wachtwoord in.";
             }
             else {
                 $errors = array();
-                if (!preg_match('@[A-Z]@', $password)) { 
+                if (!preg_match('@[A-Z]@', $this->password)) { 
                     array_push($errors, "een hoofdletter");
                 }
                
-                if (!preg_match('@[a-z]@', $password)) {
+                if (!preg_match('@[a-z]@', $this->password)) {
                     array_push($errors, "een kleine letter");    
                 }
-                if (!preg_match('@[0-9]@', $password)) {
+                if (!preg_match('@[0-9]@', $this->password)) {
                     array_push($errors, "een cijfer");
                 }
-                if (!preg_match('@[^\w]@', $password)) {
+                if (!preg_match('@[^\w]@', $this->password)) {
                     array_push($errors, "een speciaal teken");
                 }
-                if (strlen($password) < 8) {
+                if (strlen($this->password) < 8) {
                     array_push($errors, "acht tekens");
                 }
                 if (!empty($errors)) {
-                    $passwordErr = "Wachtwoord moet tenminste " . implode(", ", $errors) . " bevatten.";
+                    $this->passwordErr = "Wachtwoord moet tenminste " . implode(", ", $errors) . " bevatten.";
                 }
             }
     
-            $passwordRepeat = testInput(getPostvar("password-repeat"));
-            if (empty($passwordRepeat)) {
-                $passwordRepeatErr = "Herhaal hier je gekozen wachtwoord.";
+            $this->passwordRepeat = testInput(getPostvar("password-repeat"));
+            if (empty($this->passwordRepeat)) {
+                $this->passwordRepeatErr = "Herhaal hier je gekozen wachtwoord.";
             }
-            else if ($password != $passwordRepeat) {
-                $passwordRepeatErr = "Je wachtwoorden komen niet overeen.";
+            else if ($this->password != $this->passwordRepeat) {
+                $this->passwordRepeatErr = "Je wachtwoorden komen niet overeen.";
             }
     
-            if (empty($nameErr) && empty($emailErr) && empty($passwordErr) && empty($passwordRepeatErr)){
-                if (empty(findUserByEmail($email))){
-                    $valid = true;
+            if (empty($this->nameErr) && empty($this->emailErr) && empty($this->passwordErr) && empty($this->passwordRepeatErr)){
+                if (empty(findUserByEmail($this->email))){
+                    $this->valid = true;
                 } else {
-                    $emailErr = "E-mailadres is al in gebruik.";
+                    $this->emailErr = "E-mailadres is al in gebruik.";
                 }
             }
         }
+    }
 
-        return array ("name" => $name, "email" => $email, "password" => $password, "passwordRepeat" => $passwordRepeat,
-                        "nameErr" => $nameErr, "emailErr" => $emailErr, "passwordErr" => $passwordErr,
-                        "passwordRepeatErr" => $passwordRepeatErr, "valid" => $valid); 
+    public function storeUser() {
+        require_once "db_repository.php";
+        $options = [12];
+        $hashedPassword = password_hash ($this->password, PASSWORD_BCRYPT, $options);
+        saveUser($this->name, $this->email, $hashedPassword);
+    }
+    
+    // contact 
+    public function validateContact() {
+        if($this->isPost) {
+            
+            $this->gender = testInput($this->getPostVar("gender"));
+            if (empty($this->gender)) { 
+                $this->genderErr = "Aanhef is verplicht.";
+            } else if (!array_key_exists($this->gender, GENDERS)) {
+                $this->genderErr = "Aanhef is niet correct.";
+            }
+    
+            $this->name = testInput($this->getPostVar("name"));
+            if (empty($this->name)) {
+                $this->nameErr = "Naam is verplicht";
+            }
+                else if (!preg_match("/^[a-zA-Z-' ]*$/",$this->name)) {
+                $this->nameErr = "Alleen letters en spaties zijn toegestaan.";
+            }
+            
+            $this->email = testInput($this->getPostVar("email"));
+            if (empty($this->email)) {
+                $this->emailErr = "E-mail is verplicht";
+            } 
+                else if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                $this->emailErr = "Vul een correct e-mailadres in";
+            }
+            
+            $this->phone = testInput($this->getPostVar("phone"));
+            if (empty($this->phone)) {
+                $this->phoneErr = "Telefoonnummer is verplicht";
+            } 
+                else if (!preg_match("/^0([0-9]{9})$/",$this->phone)) {
+                $this->phoneErr = "Vul een geldig telefoonnummer in.";
+            }
+    
+            $this->preferred = testInput($this->getPostVar("preferred"));
+            if (!isset($this->preferred)) {  
+                $this->preferredErr = "Vul een voorkeur in."; 
+            } 
+                else if (!array_key_exists($this->preferred, PREFERRED)) {
+                $this->preferredErr = "Vul een voorkeur in.";  
+            }
+    
+            $this->question = testInput($this->getPostVar("question"));    
+            if (empty($this->question)) {
+                $this->questionErr = " Vul hier je vraag of opmerking in.";
+            }   
+                else {
+                $this->question = testInput($_POST["question"]);
+            }  
+    
+            if (empty($this->genderErr) && empty($this->nameErr) && empty($this->emailErr) && 
+                empty($this->phoneErr) && empty($this->preferredErr) && empty($this->questionErr))  {
+           
+                $this->valid = true;
+            } 
+         }
+    }
+
+    // change password
+    public function validateChangePassword() {
+        if($this->isPost) {
+
+            $this->oldPassword = testInput($this->getPostvar("current-password"));
+                if (empty($this->oldPassword)) {
+                    $oldPasswordErr = "Vul hier je oude wachtwoord in.";
+                }
+    
+            $this->newPassword = testInput($this->getPostvar("new-password"));
+                if (empty($this->newPassword)) {
+                    $this->newPasswordErr = "Vul hier je nieuwe wachtwoord in.";
+                }
+                else {
+                    $errors = array();
+                    if (!preg_match('@[A-Z]@', $this->newPassword)) { 
+                        array_push($errors, "een hoofdletter");
+                    }
+                   
+                    if (!preg_match('@[a-z]@', $this->newPassword)) {
+                        array_push($errors, "een kleine letter");    
+                    }
+                    if (!preg_match('@[0-9]@', $this->newPassword)) {
+                        array_push($errors, "een cijfer");
+                    }
+                    if (!preg_match('@[^\w]@', $this->newPassword)) {
+                        array_push($errors, "een speciaal teken");
+                    }
+                    if (strlen($this->newPassword) < 8) {
+                        array_push($errors, "acht tekens");
+                    }
+                    if (!empty($errors)) {
+                        $this->newPasswordErr = "Wachtwoord moet tenminste " . implode(", ", $errors) . " bevatten.";
+                    }
+                }
+            
+            $this->repeatNewPassword = testInput($this->getPostvar("new-password2"));
+                if (empty($this->repeatNewPassword)) {
+                    $this->repeatNewPasswordErr = "Herhaal hier je nieuwe wachtwoord.";
+                }
+                else if ($this->newPassword != $this->repeatNewPassword) {
+                    $this->repeatNewPasswordErr = "Je wachtwoorden komen niet overeen.";
+                }
+    
+            if (empty($this->oldPasswordError) && empty($this->newPasswordErr) && empty($this->repeatNewPasswordErr)){
+                $this->user= authenticateUserByID(getLoggedInUserID(), $this->oldPassword);
+                if (empty($this->user)) {
+                    $this->valid = false;
+                    $this->oldPasswordErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
+                } else {
+                    $this->valid = true;
+                }
+            }
+        }
+    }
+
+    private function authenticateUserByID() {
+        require_once "db_repository.php";
+        $this->user = findUserByID($this->userId);
+        return authenticateUserByUser($this->user, $this->password);
+    }
+
+    public function storeNewPassword() {
+        require_once "db_repository.php";
+        $options = [12];
+        $hashedPassword = password_hash ($this->newPassword, PASSWORD_BCRYPT, $options);
+        changePassword($this->userId, $hashedPassword);
     }
 }
 ?>
