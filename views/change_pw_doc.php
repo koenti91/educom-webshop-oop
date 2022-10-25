@@ -12,7 +12,7 @@ class ChangePwDoc extends FormsDoc {
         '<fieldset>
         <label for="current-password"><b>Oud wachtwoord: </b></label>
         <input class="password" type="password" name="current-password" id="current-password" maxlength="50" required>
-        <span class="error">* '. $this->model->oldPasswordErr .' </span>
+        <span class="error">* '. $this->model->passwordErr .' </span>
         <br>
         <label for="new-password"><b>Nieuw wachtwoord: </b></label>
         <input class="password" type="password" name="new-password" id="new-password" maxlength="50" required>

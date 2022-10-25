@@ -24,6 +24,7 @@ class UserModel extends PageModel {
     public $newPasswordErr = '';
     public $repeatNewPassword = '';
     public $repeatNewPasswordErr = '';
+    private $user = null;
     private $userId = 0;
     public $valid = false;
 
@@ -47,7 +48,7 @@ class UserModel extends PageModel {
                 $this->emailErr = "Vul je e-mailadres in.";
             }
     
-            $password = testInput($this->getPostVar("password"));
+            $this->password = testInput($this->getPostVar("password"));
             if (empty($this->password)) {
                 $this->passwordErr = "Vul je gekozen wachtwoord in.";
             }
@@ -57,15 +58,15 @@ class UserModel extends PageModel {
             }
     
             if ($this->valid) {
-                $this->user->authenticateUser();
+                $this->authenticateUser();
                 if (empty($this->user)) {
                     $this->valid = false;
-                    $this->emailErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
+                    $this->genericErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
                 }
                 else {
-                    $this->user->email;
-                    $this->user->name;
-                    $this->user->id;
+                    $this->email = $this->user["email"];
+                    $this->name = $this->user["name"];
+                    $this->userId = $this->user["id"];
                 }
             }
         }
@@ -74,18 +75,19 @@ class UserModel extends PageModel {
     private function authenticateUser () {
             require_once "db_repository.php";
             $this->user = findUserbyEmail($this->email);
-            return authenticateUserByUser($this->user, $this->password);
+            return $this->authenticateUserByUser();
         }
 
     private function authenticateUserByUser() {
         if (empty($this->user)) {
-            return NULL;
+            return;
         }
-        if (password_verify($this->password, $this->user->password)) {
-            return $this->user;
+        var_dump($this->password, $this->user["password"]);
+        if (!password_verify($this->password, $this->user["password"])) {
+            var_dump("wrong password");
+            $this->user = NULL;
         }
-        return NULL;
-        }
+    }
 
     public function doLoginUser() {
         $this->sessionManager->loginUser($this->name, $this->userId);
@@ -233,9 +235,9 @@ class UserModel extends PageModel {
     public function validateChangePassword() {
         if($this->isPost) {
 
-            $this->oldPassword = testInput($this->getPostvar("current-password"));
-                if (empty($this->oldPassword)) {
-                    $oldPasswordErr = "Vul hier je oude wachtwoord in.";
+            $this->password = testInput($this->getPostvar("current-password"));
+                if (empty($this->password)) {
+                    $this->passwordErr = "Vul hier je oude wachtwoord in.";
                 }
     
             $this->newPassword = testInput($this->getPostvar("new-password"));
@@ -273,11 +275,11 @@ class UserModel extends PageModel {
                     $this->repeatNewPasswordErr = "Je wachtwoorden komen niet overeen.";
                 }
     
-            if (empty($this->oldPasswordError) && empty($this->newPasswordErr) && empty($this->repeatNewPasswordErr)){
-                $this->user=authenticateUserByID($this->sessionManager->getLoggedInUserID(), $this->oldPassword);
+            if (empty($this->passwordError) && empty($this->newPasswordErr) && empty($this->repeatNewPasswordErr)){
+                $this->authenticateUserByID();
                 if (empty($this->user)) {
                     $this->valid = false;
-                    $this->oldPasswordErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
+                    $this->passwordErr = "Wachtwoord wordt niet herkend.";
                 } else {
                     $this->valid = true;
                 }
@@ -287,8 +289,9 @@ class UserModel extends PageModel {
 
     private function authenticateUserByID() {
         require_once "db_repository.php";
-        $this->user = findUserByID($this->userId);
-        return authenticateUserByUser($this->user, $this->password);
+        $this->user = findUserByID($this->sessionManager->getLoggedInUserID());
+        var_dump($this->user);
+        $this->authenticateUserByUser();
     }
 
     public function storeNewPassword() {

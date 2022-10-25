@@ -7,23 +7,22 @@ class LastCheckDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        $user = $this->model['user'];
         
         echo '<form method="post" action="index.php">';
         echo '<div class="order-info">';
         echo '<fieldset>';
-        echo '<b>Naam: </b>'.$user["name"];
+        echo '<b>Naam: </b>'.$this->model->user->name;
         echo '<br>';
-        echo '<b>E-mailadres: </b>'.$user["email"];
+        echo '<b>E-mailadres: </b>'.$this->model->user->email;
         echo '<br>';
-        echo '<b>Telefoonnummer: </b>'.$this->model["phone"];
+        echo '<b>Telefoonnummer: </b>'.$this->model->phone;
         echo '</fieldset>';
         echo '<fieldset>';
-        echo '<b>Adres: </b>'.$this->model["address"];
+        echo '<b>Adres: </b>'.$this->model->address;
         echo '<br>';
-        echo '<b>Postcode: </b>'.$this->model["zip_code"];
+        echo '<b>Postcode: </b>'.$this->model->zipCode;
         echo' <br>';
-        echo '<b>Woonplaats: </b>'.$this->model["city"];
+        echo '<b>Woonplaats: </b>'.$this->model->city;
         echo '<br>';
         echo '</fieldset>';
         

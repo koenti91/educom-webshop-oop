@@ -225,22 +225,22 @@ function logError($msg) {
     }
 } */
 
- function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
-    if (!isUserLoggedIn()) {
-        return;
-    }
-    echo '<form method="post" action="index.php">';
-    if ($showQuantity) {
-        $cart = getShoppingCart();
-        $currentValue = getArrayVar($cart, $productId, 1);
-        echo '<input type="text" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
-    }
-    if ($productId != null) {
-        echo '<input type="hidden" name="product-id" value="'.$productId.'">';
-    }
-    echo '<input type="hidden" name="action" value="' . $action .'">';  
-    echo '<input type="hidden" name="page" value="'. $nextPage .'">';  
-    echo '<input type="submit" name="submit" class="btn-btn" value= "'.$buttonLabel.'">';
-    echo '</form>';
- }
+//  function addActionForm($action, $buttonLabel, $nextPage, $productId = null, $showQuantity = false) {
+//     if (!isUserLoggedIn()) {
+//         return;
+//     }
+//     echo '<form method="post" action="index.php">';
+//     if ($showQuantity) {
+//         $cart = getShoppingCart();
+//         $currentValue = getArrayVar($cart, $productId, 1);
+//         echo '<input type="text" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
+//     }
+//     if ($productId != null) {
+//         echo '<input type="hidden" name="product-id" value="'.$productId.'">';
+//     }
+//     echo '<input type="hidden" name="action" value="' . $action .'">';  
+//     echo '<input type="hidden" name="page" value="'. $nextPage .'">';  
+//     echo '<input type="submit" name="submit" class="btn-btn" value= "'.$buttonLabel.'">';
+//     echo '</form>';
+//  }
 ?>

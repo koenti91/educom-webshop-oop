@@ -56,7 +56,7 @@ class PageController {
                     $this->model->setPage("login");
                 }
                 break;
-             case "changepw":
+            case "changepw":
                 require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
                 $this->model -> validateChangePassword();
@@ -65,7 +65,19 @@ class PageController {
                     $this->model->setPage("changePwConfirmation");
                 }
                 break;
-            //
+            case 'webshop':
+                require_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $this->model->handleActionForm();
+                // $this->model->cart = $this-> sessionManager -> getShoppingCart();
+                break;
+            case "detail":
+                require_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $this->model = handleActionForm();
+                $this->id = getUrlVar("id");
+                $this->model->cart = getProductDetails();
+
         }
     }
 
@@ -111,11 +123,11 @@ class PageController {
                 $view = new WebshopDoc($this->model);
                 break;
             case "detail":
-                require_once ("views/detail.doc.php");
+                require_once ("views/detail_doc.php");
                 $view = new DetailDoc($this->model);
                 break;
             case "shoppingCart":
-                require_once ("views/shopping_cart.php");
+                require_once ("views/shopping_cart_doc.php");
                 $view = new ShoppingCartDoc($this->model);
                 break;
             case "deliveryAddress":

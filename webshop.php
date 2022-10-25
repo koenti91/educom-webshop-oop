@@ -21,7 +21,7 @@ function showWebshopProduct($product) {
     echo '<h4>'.$product['name'].'</h4>';
     echo '<img src="Images/'.$product['filename'].'" alt="'.$product['name'].'" width="100px">';
     echo '<p> &euro;'.$product['price'] . '</p></a>';
-    addActionForm("add-to-cart", "Toevoegen aan mandje", "webshop", $product['id'], true);
+    // addActionForm("add-to-cart", "Toevoegen aan mandje", "webshop", $product['id'], true);
     echo '</div>';
 }
 

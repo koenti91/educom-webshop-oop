@@ -12,7 +12,7 @@ class ProductDoc extends BasicDoc {
                 $currentValue = getArrayVar($this->cart, $productId, 1);
                 echo '<input type="number" name="quantity" class="set-quantity" value="'.$currentValue.'" />';
             }
-            if (!empty($this->productId)) {
+            if (!empty($productId)) {
                 echo '<input type="hidden" name="productId" value="'.$productId.'">';
             }
             if (!empty($deliveryAddressId)) {
@@ -22,7 +22,7 @@ class ProductDoc extends BasicDoc {
             </form>';
         }
     }
-    protected function showCartTable($canEdit = false) {
+    protected function showCartTable() {
         echo '<div class="table-responsive">
                     <table class="table-bordered">
                         <tr class="table-headers">
@@ -30,39 +30,39 @@ class ProductDoc extends BasicDoc {
                             <th>Aantal</th>
                             <th>Prijs</th>
                             <th>Totaal</th>
-                            ' . ($canEdit ? '<th>Verwijder</th>' : '') .'
+                            ' . ($this->canEdit ? '<th>Verwijder</th>' : '') .'
                         </tr>';
                 
-            foreach($this->model["cartRows"] as $cartRow) {
-                $this->showCartRow($cartRow, $canEdit);
+            foreach($this->model->cartRows as $cartRow) {
+                $this->showCartRow($cartRow, $this->canEdit);
             }      
                         
             echo '<tr class="total">
                     <td></td>
                     <td><b>Totaal</b></td>
                     <td></td>
-                    <td><b> &euro; '.number_format($this->model['total'] / 100, 2).'</b></td>
-                    '.($canEdit ? '<td></td>'  : '') .'
+                    <td><b> &euro; '.number_format($this->model->total / 100, 2).'</b></td>
+                    '.($this->canEdit ? '<td></td>'  : '') .'
                   </tr>
             </table>
             </div>';
     }
-    protected function showCartRow($cartRow, $canEdit) {
+    protected function showCartRow() {
         echo '<tr class="model-row">
-            <td><img src="Images/'.$cartRow['filename'].'" alt="'.$cartRow['name'].'" 
-            width="50px"/><br>'.$cartRow["name"].'</td>
+            <td><img src="Images/'.$this->cartRow->filename.'" alt="'.$this->cartRow->name.'" 
+            width="50px"/><br>'.$this->cartRow->name.'</td>
             <td>';
-            if ($canEdit) { 
-                $this->addActionForm("add-to-cart", "Bijwerken", "shoppingCart", $cartRow["productId"], true);
+            if ($this->canEdit) { 
+                $this->addActionForm("add-to-cart", "Bijwerken", "shoppingCart", $this->cartRow->productId, true);
             } else {
-                echo $cartRow['quantity'];
+                echo $this->cartRow->quantity;
             }
             echo '</td>
-            <td> &euro; '.number_format($cartRow["price"] / 100, 2).'</td>
-            <td> &euro; '.number_format($cartRow['subtotal'] / 100, 2).'</td>';
-            if ($canEdit) {
+            <td> &euro; '.number_format($this->cartRow->price / 100, 2).'</td>
+            <td> &euro; '.number_format($this->cartRow->subtotal / 100, 2).'</td>';
+            if ($this->canEdit) {
                 echo '<td>';
-                $this->addActionForm("delete", "Verwijder", "shoppingCart", $cartRow["productId"]);
+                $this->addActionForm("delete", "Verwijder", "shoppingCart", $this->cartRow->productId);
                 echo '</td>';
             }
         echo '</tr>';
