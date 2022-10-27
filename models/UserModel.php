@@ -27,12 +27,20 @@ class UserModel extends PageModel {
     private $user = null;
     private $userId = 0;
     public $valid = false;
+    public $deliveryAddressId;
+    public $deliveryAddressIdErr = '';
+    public $address = '';
+    public $addressErr = '';
+    public $zipCode = '';
+    public $zipCodeErr = '';
+    public $city = '';
+    public $cityErr = '';
 
     public function __construct($pageModel) {
         PARENT::__construct($pageModel);
     }
 
-    function testInput($string) {
+    public function testInput($string) {
         $string = trim($string);
         $string = stripslashes($string);
         $string = htmlspecialchars($string);
@@ -43,12 +51,12 @@ class UserModel extends PageModel {
     public function validateLogin() {
         if ($this->isPost) {
             
-            $this->email = testInput($this->getPostVar('email'));
+            $this->email = $this->testInput($this->getPostVar('email'));
             if (empty($this->email)) {
                 $this->emailErr = "Vul je e-mailadres in.";
             }
     
-            $this->password = testInput($this->getPostVar("password"));
+            $this->password = $this->testInput($this->getPostVar("password"));
             if (empty($this->password)) {
                 $this->passwordErr = "Vul je gekozen wachtwoord in.";
             }
@@ -82,9 +90,7 @@ class UserModel extends PageModel {
         if (empty($this->user)) {
             return;
         }
-        var_dump($this->password, $this->user["password"]);
         if (!password_verify($this->password, $this->user["password"])) {
-            var_dump("wrong password");
             $this->user = NULL;
         }
     }
@@ -104,7 +110,7 @@ class UserModel extends PageModel {
     public function validateRegister() {
         
         if($this->isPost) {
-            $this->name = testInput($this->getPostvar("name"));
+            $this->name = $this->testInput($this->getPostvar("name"));
             if (empty($this->name)) {
                 $this->nameErr = "Naam is verplicht";
             } 
@@ -112,7 +118,7 @@ class UserModel extends PageModel {
                 $this->nameErr = "Alleen letters en spaties zijn toegestaan."; 
             }
             
-            $this->email = testInput($this->getPostVar("email")); 
+            $this->email = $this->testInput($this->getPostVar("email")); 
             if (empty($this->email)) {
                 $this->emailErr = "E-mail is verplicht";
             }
@@ -120,7 +126,7 @@ class UserModel extends PageModel {
                     $this->emailErr = "Vul een correct e-mailadres in.";
             }
     
-            $this->password = testInput($this->getPostvar("password"));
+            $this->password = $this->testInput($this->getPostvar("password"));
             if (empty($this->password)) {
                 $this->passwordErr = "Vul hier een wachtwoord in.";
             }
@@ -147,7 +153,7 @@ class UserModel extends PageModel {
                 }
             }
     
-            $this->passwordRepeat = testInput(getPostvar("password-repeat"));
+            $this->passwordRepeat = $this->testInput($this->getPostvar("password-repeat"));
             if (empty($this->passwordRepeat)) {
                 $this->passwordRepeatErr = "Herhaal hier je gekozen wachtwoord.";
             }
@@ -220,7 +226,7 @@ class UserModel extends PageModel {
                 $this->questionErr = " Vul hier je vraag of opmerking in.";
             }   
                 else {
-                $this->question = testInput($_POST["question"]);
+                $this->question = $this->testInput($_POST["question"]);
             }  
     
             if (empty($this->genderErr) && empty($this->nameErr) && empty($this->emailErr) && 
@@ -290,7 +296,6 @@ class UserModel extends PageModel {
     private function authenticateUserByID() {
         require_once "db_repository.php";
         $this->user = findUserByID($this->sessionManager->getLoggedInUserID());
-        var_dump($this->user);
         $this->authenticateUserByUser();
     }
 
@@ -299,6 +304,63 @@ class UserModel extends PageModel {
         $options = [12];
         $hashedPassword = password_hash ($this->newPassword, PASSWORD_BCRYPT, $options);
         changePassword($this->userId, $hashedPassword);
+    }
+
+    // delivery address 
+    public function validateDeliveryAddressSelection() {
+    
+        if ($this->isPost) {
+    
+            $this->deliveryAddressId = $this->testInput($this->getPostVar("deliveryAddressId"));
+            if (empty($this->deliveryAddressId) && $this->deliveryAddressId != "0") {
+                $this->deliveryAddressIdErr = "Kies een adres.";
+            }
+            if (empty($this->deliveryAddressIdErr)) {
+                $this->valid = true;
+            }
+        }     
+    }
+
+    public function validateDeliveryAddress() {
+    
+        if ($this->isPost) {
+    
+            $this->address = $this->testInput($this->getPostVar("address"));
+            if (empty($this->address)) {
+            $this->valid = false;
+            $this->addressErr = "Vul een adres in.";
+            }
+    
+            $this->zipCode = $this->testInput($this->getPostVar("zip_code"));
+            if (empty($this->zipCode)) {
+                $this->valid = false;
+                $this->zipCodeErr = "Vul een postcode in.";
+            } else if (!preg_match("/^[0-9]{4}[A-Z]{2}$/",$this->zipCode)) {
+                $this->zipCodeErr = "Vul je postcode in volgens dit formaat: 1234AB.";
+            }
+    
+            $this->city = $this->testInput($this->getPostVar("city"));
+            if (empty($this->city)) {
+                $this->valid = false;
+                $this->cityErr = "Vul een woonplaats in.";
+            } 
+    
+            $this->phone = $this->testInput($this->getPostVar("phone"));
+            if(empty($this->phone)) {
+                $this->valid = false;
+                $this->phoneErr = "Vul een telefoonnummer in.";
+            } else if (!preg_match("/^0([0-9]{9})$/",$this->phone)) {
+                $this->phoneErr = "Vul een geldig telefoonnummer in.";
+            }
+            
+            if (empty($this->addressErr) && empty($this->zipCodeErr) && empty($this->cityErr) && empty($this->phoneErr)) {
+                if(empty(findDeliveryAddressByUserAndAddress($this->userId, $this->address, $this->zipCode, $this->city))) {
+                    $this->valid = true;
+                } else {
+                    $this->addressErr = "Dit adres bestaat al.";
+                }
+            }
+        }
     }
 }
 ?>

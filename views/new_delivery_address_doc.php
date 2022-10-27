@@ -1,13 +1,13 @@
 <?php 
-require_once "basic_doc.php";
+require_once "forms_doc.php";
 
-class NewDeliveryAddressDoc extends BasicDoc {
+class NewDeliveryAddressDoc extends FormsDoc {
     
     protected function showHeader() {
         echo 'Nieuw afleveradres toevoegen ';
     }
     
-    protected function ShowContent() {  
+    protected function showForm() {  
         echo '<form action="index.php" method="post">
             <fieldset>
                 <div>

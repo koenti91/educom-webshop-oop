@@ -42,11 +42,16 @@ class PageModel {
     }
 
     protected function getUrlVar($key, $default ='') {
-        return getArrayVar($_GET, $key, $default);
+        return $this->getArrayVar($_GET, $key, $default);
     }
 
     protected function getPostVar($key, $default ='') {
-        return getArrayVar($_POST, $key, $default);
+        return $this->getArrayVar($_POST, $key, $default);
+    }
+
+    public function getArrayVar($array, $key, $default ='')
+    {
+        return isset($array[$key]) ? $array[$key] : $default;
     }
 
     public function createMenu() {
@@ -64,7 +69,10 @@ class PageModel {
             $this->menu["register"]  = new MenuItem('register', 'Registreren');
         }
     }
-    
+
+    protected function logError($msg) {
+        echo "LOG TO SERVER: " . $msg;
+    }  
 }
 
 

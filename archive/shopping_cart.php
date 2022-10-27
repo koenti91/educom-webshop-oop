@@ -39,16 +39,16 @@
         }
     }
      function showCartRow($cartRow) {
-        echo '<tr class="data-row">
-            <td><img src="Images/'.$cartRow['filename'].'" alt="'.$cartRow['name'].'" 
-            width="50px"/><br>'.$cartRow["name"].'</td>
-            <td>';
-            addActionForm("add-to-cart", "Bijwerken", "shoppingCart", $cartRow["productId"], true);
-            echo '</td>
-            <td> &euro; '.number_format($cartRow["price"] / 100, 2).'</td>
-            <td> &euro; '.number_format($cartRow['subtotal'] / 100, 2).'</td><td>';
-        addActionForm("delete", "Verwijder", "shoppingCart", $cartRow["productId"]);
-        echo '</td></tr>';
+        // echo '<tr class="data-row">
+        //     <td><img src="Images/'.$cartRow['filename'].'" alt="'.$cartRow['name'].'" 
+        //     width="50px"/><br>'.$cartRow["name"].'</td>
+        //     <td>';
+        //     addActionForm("add-to-cart", "Bijwerken", "shoppingCart", $cartRow["productId"], true);
+        //     echo '</td>
+        //     <td> &euro; '.number_format($cartRow["price"] / 100, 2).'</td>
+        //     <td> &euro; '.number_format($cartRow['subtotal'] / 100, 2).'</td><td>';
+        // addActionForm("delete", "Verwijder", "shoppingCart", $cartRow["productId"]);
+        // echo '</td></tr>';
      }
 
      function showDeliveryPageButton($data) {

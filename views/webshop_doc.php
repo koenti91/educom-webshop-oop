@@ -10,21 +10,22 @@ class WebshopDoc extends ProductDoc {
     protected function showContent () {
         echo' <div class="product-overview">';
 
+
         foreach ($this->model->products as $product) {
-            $this->showWebshopProduct($product);
+            $this->showWebshopProduct((object) $product);
         }
 
         echo '</div>';
     }
 
-    private function showWebshopProduct() {
-        echo '<div class="product-list"><a class="shop-products" href="index.php?page=detail&id='.$this->product->id.'">';
-        if (isset($this->product->name)) {
-            echo '<h4>'.$this->product->name.'</h4>';
+    private function showWebshopProduct($product) {
+        echo '<div class="product-list"><a class="shop-products" href="index.php?page=detail&id='.$product->id.'">';
+        if (isset($product->name)) {
+            echo '<h4>'.$product->name.'</h4>';
         }
-        echo '<img src="Images/'.$this->product->filename.'" alt="'.$this->product->name.'" width="100px">';
-        echo '<p> &euro;'.$this->product->price . '</p></a>';
-        $this->model-> addActionForm("add-to-cart", "Toevoegen", "webshop", $this->product->id, true);
+        echo '<img src="Images/'.$product->filename.'" alt="'.$product->name.'" width="100px">';
+        echo '<p> &euro;'.$product->price . '</p></a>';
+        $this-> addActionForm("add-to-cart", "Toevoegen", "webshop", $product->id, true);
         echo '</div>';
     }
 }

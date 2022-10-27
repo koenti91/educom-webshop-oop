@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 function getArrayVar($array, $key, $default ='')
 {
@@ -15,4 +15,4 @@ function getUrlVar($key, $default = '')
     return getArrayVar($_GET, $key, $default);
 }
 
-?>
+?> -->

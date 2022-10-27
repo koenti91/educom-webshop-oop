@@ -2,23 +2,14 @@
 
 session_start();
 
-require_once ("constants.php");
-require_once ("session_manager.php");
-require_once ("validations.php");
-require_once ("products_service.php");
 require_once ("controllers/PageController.php");
-require_once ("get_var.php");
 
 // Main
-// $data = processRequest($page);
 $controller = new PageController();
 $controller -> handleRequest();
 
 // Functions
 
-function logError($msg) {
-    echo "LOG TO SERVER: " . $msg;
-}
 
 // function getRequestedPage()
 // {
@@ -91,7 +82,7 @@ function logError($msg) {
 //             $data['cart'] = getShoppingCart(); 
 //             break;
 
-//         case 'deliveryAddress':
+// //         case 'deliveryAddress':
 //             require_once('delivery_address.php');
 //             $data = validateDeliveryAddressSelection();
 //             $userId = getLoggedInUserID();

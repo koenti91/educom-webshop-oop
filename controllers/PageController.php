@@ -3,7 +3,8 @@ require_once "models/PageModel.php";
 
 class PageController {
 
-    private $model;
+    private $pageModel;
+    private $shopModel;
 
     public function __construct() {
         $this->model = new PageModel(NULL);
@@ -13,7 +14,6 @@ class PageController {
         $this->getRequest();
         $this->processRequest();
         $this->showResponsePage();
-        print_r($this->model);
     }
 
     // from client
@@ -33,12 +33,14 @@ class PageController {
                     $this->model->setPage("home");
                 }
                 break;
+
             case "logout":
                 require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
                 $this->model -> doLogoutUser();
                 $this->model -> setPage("home");
                 break;
+
             case "contact":
                 require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
@@ -47,6 +49,7 @@ class PageController {
                     $this->model->setPage("thanks");
                 }
                 break;
+                
             case "register":
                 require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
@@ -56,6 +59,7 @@ class PageController {
                     $this->model->setPage("login");
                 }
                 break;
+
             case "changepw":
                 require_once "models/UserModel.php";
                 $this->model = new UserModel($this->model);
@@ -65,19 +69,62 @@ class PageController {
                     $this->model->setPage("changePwConfirmation");
                 }
                 break;
+
             case 'webshop':
                 require_once "models/ShopModel.php";
                 $this->model = new ShopModel($this->model);
                 $this->model->handleActionForm();
-                // $this->model->cart = $this-> sessionManager -> getShoppingCart();
+                $this->model->getShoppingCartRows();
                 break;
+
             case "detail":
                 require_once "models/ShopModel.php";
                 $this->model = new ShopModel($this->model);
-                $this->model = handleActionForm();
-                $this->id = getUrlVar("id");
-                $this->model->cart = getProductDetails();
+                $this->model->handleActionForm();
+                $this->model->getShoppingCartRows();
+                $this->model->getProductDetails();
+                break;
 
+            case "shoppingCart":
+                require_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $this->model ->handleActionForm();
+                $this->model->getShoppingCartRows();
+                break;
+
+            case "deliveryAddress":
+                require_once 'models/UserModel.php';
+                $this->model = new UserModel($this->model);
+                $this->model->validateDeliveryAddressSelection();
+                //
+                if($this->model->valid) {
+                    if ($this->model->deliveryAddressId == 0) {
+                        $this->model->setPage("newDeliveryAddress");
+                    } else {
+                        $this->model->setPage("lastCheck");
+                        $this->model = array_merge($this->model, findDeliveryById($this->model->id, $this->model->deliveryAddressId));
+                        $this->model->user = $findUserById($this->userId);
+                        $this->model = array_merge($this->model, getShoppingCartRows()); 
+                    }
+                } else {
+                    $this->model = array_merge($this->model, getDeliveryAddressesData($this->userId));
+                }
+                break;
+
+            case "newDeliveryAddress":
+                require_once "models/ShopModel.php";
+                // hoe in sessionManager hier?
+                $this->userId = getLoggedInUserID();
+                $this->model->validateDeliveryAddress(); //
+                if ($this->model->valid){
+                    $this->model->deliveryAddressId = storeDeliveryAddress();
+                } //
+                break;
+            
+            case "orderConfirmation":
+                require_once "models/ShopModel.php";
+                $this->model = handleActionForm();
+                break;
         }
     }
 
