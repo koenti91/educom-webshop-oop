@@ -84,7 +84,7 @@ $controller -> handleRequest();
 
 // //         case 'deliveryAddress':
 //             require_once('delivery_address.php');
-//             $data = validateDeliveryAddressSelection();
+// //             $data = validateDeliveryAddressSelection();
 //             $userId = getLoggedInUserID();
 //             if ($data['valid']) {
 //                 if ($data['deliveryAddressId'] == 0) {

@@ -362,5 +362,28 @@ class UserModel extends PageModel {
             }
         }
     }
+
+    public function getCurrentDeliveryAddress() {
+        return findDeliveryAddresses($this->userId);
+    }
+
+    public function storeDeliveryAddress() {
+        require_once "db_repository.php";
+        return saveDeliveryAddress($this->userId, $this->data["address"], $this->data["zip_code"], $this->data["city"], $this->data["phone"]);
+    }
+
+    public function getDeliveryAddressesData() { 
+        $this->addresses = array();
+        $this->user = array();
+        $this->genericErr = "";
+        try {
+            $this->addresses = getCurrentDeliveryAddress($this->userId);
+            $this->user = findUserByID($this->userId);
+        }
+        catch (Exception $exception) {
+            $genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
+            $this->logError("GetDeliveryAddressesData failed" .$exception -> getMessage());
+        }
+    }
 }
 ?>

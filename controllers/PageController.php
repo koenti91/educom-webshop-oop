@@ -96,7 +96,6 @@ class PageController {
                 require_once 'models/UserModel.php';
                 $this->model = new UserModel($this->model);
                 $this->model->validateDeliveryAddressSelection();
-                //
                 if($this->model->valid) {
                     if ($this->model->deliveryAddressId == 0) {
                         $this->model->setPage("newDeliveryAddress");
@@ -107,23 +106,25 @@ class PageController {
                         $this->model = array_merge($this->model, getShoppingCartRows()); 
                     }
                 } else {
-                    $this->model = array_merge($this->model, getDeliveryAddressesData($this->userId));
+                    $this->model = array_merge($this->model, $this->getDeliveryAddressesData($this->userId));
                 }
                 break;
 
             case "newDeliveryAddress":
-                require_once "models/ShopModel.php";
-                // hoe in sessionManager hier?
+                require_once "models/UserModel.php";
+                $this->model = new UserModel($this->user);
                 $this->userId = getLoggedInUserID();
-                $this->model->validateDeliveryAddress(); //
+                $this->model->validateDeliveryAddress();
                 if ($this->model->valid){
-                    $this->model->deliveryAddressId = storeDeliveryAddress();
+                    $this->model->deliveryAddressId->storeDeliveryAddress();
                 } //
                 break;
             
             case "orderConfirmation":
                 require_once "models/ShopModel.php";
-                $this->model = handleActionForm();
+                $this->model = new ShopModel($this->model);
+                $this->model->handleActionForm();
+                $this->model->getShoppingCartRows();
                 break;
         }
     }
