@@ -74,7 +74,4 @@ class PageModel {
         echo "LOG TO SERVER: " . $msg;
     }  
 }
-
-
-
 ?>

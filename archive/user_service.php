@@ -56,8 +56,8 @@ function getDeliveryAddressesData($userId) {
         $user = findUserByID($userId);
     }
     catch (Exception $exception) {
-        $genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
-        logError("GetDeliveryAddressesData failed" .$exception -> getMessage());
+        // $genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
+        // logError("GetDeliveryAddressesData failed" .$exception -> getMessage());
     }
 
     return array("addresses" => $addresses, 'user' => $user, "genericErr" => $genericErr);

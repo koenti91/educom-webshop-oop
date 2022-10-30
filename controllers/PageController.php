@@ -93,31 +93,30 @@ class PageController {
                 break;
 
             case "deliveryAddress":
-                require_once 'models/UserModel.php';
-                $this->model = new UserModel($this->model);
+                require_once 'models/ShopModel.php';
+                $this->model = new ShopModel($this->model);
                 $this->model->validateDeliveryAddressSelection();
                 if($this->model->valid) {
                     if ($this->model->deliveryAddressId == 0) {
                         $this->model->setPage("newDeliveryAddress");
                     } else {
-                        $this->model->setPage("lastCheck");
-                        $this->model = array_merge($this->model, findDeliveryById($this->model->id, $this->model->deliveryAddressId));
-                        $this->model->user = $findUserById($this->userId);
-                        $this->model = array_merge($this->model, getShoppingCartRows()); 
+                        $this->model->getLastCheckBeforeOrder();
+                        $this->model->setPage("lastCheck"); 
                     }
                 } else {
-                    $this->model = array_merge($this->model, $this->getDeliveryAddressesData($this->userId));
+                    $this->model->getDeliveryAddressesData();
                 }
                 break;
 
             case "newDeliveryAddress":
-                require_once "models/UserModel.php";
-                $this->model = new UserModel($this->user);
-                $this->userId = getLoggedInUserID();
+                require_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
                 $this->model->validateDeliveryAddress();
                 if ($this->model->valid){
-                    $this->model->deliveryAddressId->storeDeliveryAddress();
-                } //
+                    $this->model->storeDeliveryAddress();
+                    $this->model->getLastCheckBeforeOrder();
+                    $this->model->setPage("lastCheck");
+                } 
                 break;
             
             case "orderConfirmation":

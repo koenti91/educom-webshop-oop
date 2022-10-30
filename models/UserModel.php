@@ -24,7 +24,7 @@ class UserModel extends PageModel {
     public $newPasswordErr = '';
     public $repeatNewPassword = '';
     public $repeatNewPasswordErr = '';
-    private $user = null;
+    public $user = array();
     private $userId = 0;
     public $valid = false;
     public $deliveryAddressId;
@@ -35,6 +35,8 @@ class UserModel extends PageModel {
     public $zipCodeErr = '';
     public $city = '';
     public $cityErr = '';
+    public $addresses = '';
+    public $id = 0;
 
     public function __construct($pageModel) {
         PARENT::__construct($pageModel);
@@ -304,86 +306,6 @@ class UserModel extends PageModel {
         $options = [12];
         $hashedPassword = password_hash ($this->newPassword, PASSWORD_BCRYPT, $options);
         changePassword($this->userId, $hashedPassword);
-    }
-
-    // delivery address 
-    public function validateDeliveryAddressSelection() {
-    
-        if ($this->isPost) {
-    
-            $this->deliveryAddressId = $this->testInput($this->getPostVar("deliveryAddressId"));
-            if (empty($this->deliveryAddressId) && $this->deliveryAddressId != "0") {
-                $this->deliveryAddressIdErr = "Kies een adres.";
-            }
-            if (empty($this->deliveryAddressIdErr)) {
-                $this->valid = true;
-            }
-        }     
-    }
-
-    public function validateDeliveryAddress() {
-    
-        if ($this->isPost) {
-    
-            $this->address = $this->testInput($this->getPostVar("address"));
-            if (empty($this->address)) {
-            $this->valid = false;
-            $this->addressErr = "Vul een adres in.";
-            }
-    
-            $this->zipCode = $this->testInput($this->getPostVar("zip_code"));
-            if (empty($this->zipCode)) {
-                $this->valid = false;
-                $this->zipCodeErr = "Vul een postcode in.";
-            } else if (!preg_match("/^[0-9]{4}[A-Z]{2}$/",$this->zipCode)) {
-                $this->zipCodeErr = "Vul je postcode in volgens dit formaat: 1234AB.";
-            }
-    
-            $this->city = $this->testInput($this->getPostVar("city"));
-            if (empty($this->city)) {
-                $this->valid = false;
-                $this->cityErr = "Vul een woonplaats in.";
-            } 
-    
-            $this->phone = $this->testInput($this->getPostVar("phone"));
-            if(empty($this->phone)) {
-                $this->valid = false;
-                $this->phoneErr = "Vul een telefoonnummer in.";
-            } else if (!preg_match("/^0([0-9]{9})$/",$this->phone)) {
-                $this->phoneErr = "Vul een geldig telefoonnummer in.";
-            }
-            
-            if (empty($this->addressErr) && empty($this->zipCodeErr) && empty($this->cityErr) && empty($this->phoneErr)) {
-                if(empty(findDeliveryAddressByUserAndAddress($this->userId, $this->address, $this->zipCode, $this->city))) {
-                    $this->valid = true;
-                } else {
-                    $this->addressErr = "Dit adres bestaat al.";
-                }
-            }
-        }
-    }
-
-    public function getCurrentDeliveryAddress() {
-        return findDeliveryAddresses($this->userId);
-    }
-
-    public function storeDeliveryAddress() {
-        require_once "db_repository.php";
-        return saveDeliveryAddress($this->userId, $this->data["address"], $this->data["zip_code"], $this->data["city"], $this->data["phone"]);
-    }
-
-    public function getDeliveryAddressesData() { 
-        $this->addresses = array();
-        $this->user = array();
-        $this->genericErr = "";
-        try {
-            $this->addresses = getCurrentDeliveryAddress($this->userId);
-            $this->user = findUserByID($this->userId);
-        }
-        catch (Exception $exception) {
-            $genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
-            $this->logError("GetDeliveryAddressesData failed" .$exception -> getMessage());
-        }
     }
 }
 ?>
