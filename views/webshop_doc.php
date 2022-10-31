@@ -12,7 +12,7 @@ class WebshopDoc extends ProductDoc {
 
 
         foreach ($this->model->products as $product) {
-            $this->showWebshopProduct((object) $product);
+            $this->showWebshopProduct($product);
         }
 
         echo '</div>';

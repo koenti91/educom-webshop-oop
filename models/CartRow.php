@@ -1,8 +1,8 @@
 <?php
 
 class CartRow {
-    private $product;
-    private $quantity;
+    public $product;
+    public $quantity;
 
     public function __construct($product, $quantity) {
         $this->product = $product;
@@ -10,7 +10,7 @@ class CartRow {
     }
 
     public function priceInCents() {
-        return intVal($this->product['price'] * 100); 
+        return intVal($this->product->price * 100); 
     }
 
     public function subTotal() {
@@ -18,15 +18,15 @@ class CartRow {
     }
 
     public function name() {
-        return $this->product['name'];
+        return $this->product->name;
     }
 
     public function filename() {
-        return $this->product['filename'];
+        return $this->product->filename;
     }
 
     public function productId() {
-        return $this->product['id'];
+        return $this->product->id;
     }
 
     public function quantity() {

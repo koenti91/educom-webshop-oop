@@ -3,7 +3,7 @@ require_once "basic_doc.php";
 
 class OrderConfirmationDoc extends BasicDoc {
     
-    protected function ShowHeaderContent() {
+    protected function ShowHeader() {
         echo 'Bestelling bevestigd!';
     }
 

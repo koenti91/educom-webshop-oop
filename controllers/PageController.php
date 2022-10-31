@@ -118,12 +118,15 @@ class PageController {
                     $this->model->setPage("lastCheck");
                 } 
                 break;
-            
-            case "orderConfirmation":
+
+            case "lastCheck":
                 require_once "models/ShopModel.php";
+
                 $this->model = new ShopModel($this->model);
-                $this->model->handleActionForm();
-                $this->model->getShoppingCartRows();
+                $this->model->getLastCheckBeforeOrder();
+                $this->model->storeOrder();
+                $this->model->setPage("orderConfirmation");
+
                 break;
         }
     }
@@ -188,6 +191,7 @@ class PageController {
             case "lastCheck":
                 require_once("views/last_check_doc.php");
                 $view = new LastCheckDoc($this->model);
+                var_dump($this->model);
                 break;
             case "orderConfirmation":
                 require_once("views/order_confirmation_doc.php");

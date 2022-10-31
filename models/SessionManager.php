@@ -45,7 +45,7 @@ class SessionManager {
         return true; 
     }
 
-    public function getDeliveryAddressForSession () {
+    public function getDeliveryAddressIdForSession () {
         return $_SESSION['deliveryAddressId'];
     }
 }

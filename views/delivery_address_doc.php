@@ -11,9 +11,9 @@ class DeliveryAddressDoc extends FormsDoc {
         echo '<h3> Jouw gegevens: </h3>';
         
         echo '<fieldset>';
-        echo 'Naam: '.$this->model->user["name"];
+        echo 'Naam: '.$this->model->user->name;
         echo '<br>';
-        echo 'E-mailadres: '.$this->model->user["email"];
+        echo 'E-mailadres: '.$this->model->user->email;
         echo '<br>';
         echo '</fieldset>';
         if (count($this->model->addresses) > 0) {
@@ -23,8 +23,8 @@ class DeliveryAddressDoc extends FormsDoc {
             <option value="0">Vul een nieuw afleveradres in</option>';
             foreach ($this->model->addresses as $address) {
                 
-                $this->selected = $address['is_default'] ? ' selected' : '';
-                echo '<option value="'.$address['id'].''.$this->selected.'">'.$address['address'].' '.$address['city'].'</option>';
+                $this->selected = $address->is_default ? ' selected' : '';
+                echo '<option value="'.$address->id.''.$this->selected.'">'.$address->address.' '.$address->city.'</option>';
             }
             echo '</select><span class="error"> * ' . $this->model->deliveryAddressIdErr . '</span> </fieldset>';
         } else {

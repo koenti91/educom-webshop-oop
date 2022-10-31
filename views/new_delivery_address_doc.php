@@ -8,7 +8,7 @@ class NewDeliveryAddressDoc extends FormsDoc {
     }
     
     protected function showForm() {  
-        echo '<form action="index.php" method="post">
+        echo '
             <fieldset>
                 <div>
                     <label for ="address"><b>Adres: </b></label>
@@ -33,7 +33,6 @@ class NewDeliveryAddressDoc extends FormsDoc {
             </fieldset>
             <input type="hidden" name="page" value="newDeliveryAddress" />
             <button class="submit" type="submit">Bevestigen</button>
-        </form>
         ';
     }
 }

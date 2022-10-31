@@ -15,23 +15,21 @@ class LastCheckDoc extends ProductDoc {
         echo '<br>';
         echo '<b>E-mailadres: </b>'.$this->model->user->email;
         echo '<br>';
-        echo '<b>Telefoonnummer: </b>'.$this->model->phone;
+        echo '<b>Telefoonnummer: </b>'.$this->model->deliveryAddress->phone;
         echo '</fieldset>';
         echo '<fieldset>';
-        echo '<b>Adres: </b>'.$this->model->address;
+        echo '<b>Adres: </b>'.$this->model->deliveryAddress->address;
         echo '<br>';
-        echo '<b>Postcode: </b>'.$this->model->zipCode;
+        echo '<b>Postcode: </b>'.$this->model->deliveryAddress->zip_code;
         echo' <br>';
-        echo '<b>Woonplaats: </b>'.$this->model->city;
+        echo '<b>Woonplaats: </b>'.$this->model->deliveryAddress->city;
         echo '<br>';
         echo '</fieldset>';
         
         echo '<div class="order-info">';
         $this->showCartTable(false);
-        $this->AddActionForm("orderConfirmation", "Bestelling afronden", "orderConfirmation", deliveryAddressId: $this->model["deliveryAddressId"]);
+        $this->addActionForm("lastCheck", "Bestelling afronden", "lastCheck", deliveryAddressId: $this->model->deliveryAddressId);
         echo '</div>';
         echo '</form>';
     }
 }
-
-?>
