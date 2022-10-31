@@ -132,7 +132,7 @@ function saveOrder($userId, $deliveryAddressId, $cartRows) {
 
     foreach($cartRows as $cartRow) {
         $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) 
-                 VALUES ($orderId, " . $cartRow->product['id'] . ", " . $cartRow->quantity . ", '" . ($cartRow->product['price']/100) . "')";
+                 VALUES ('$orderId', '" . $cartRow->product->id . "', '" . $cartRow->quantity . "', '" . $cartRow->product->price . "')";
         executeQuery($conn, $sql, false);
     }
     closeDatabase($conn);
@@ -150,7 +150,7 @@ function findDeliveryAddressByUserAndAddress($userId, $address, $zipCode, $city)
     $conn = connectDatabase();
 
     $sql = "SELECT * FROM delivery_address 
-            WHERE user_id = $userId and address = '$address' and 
+            WHERE user_id = '$userId and address = '$address' and 
                   zip_code = '$zipCode' and city = '$city'";
 
     return findOne($conn, $sql);
@@ -175,5 +175,3 @@ function saveDeliveryAddress($userId, $address, $zipCode, $city, $phone) {
     
     return $id;
 }
-
-?>

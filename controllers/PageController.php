@@ -126,7 +126,6 @@ class PageController {
                 $this->model->getLastCheckBeforeOrder();
                 $this->model->storeOrder();
                 $this->model->setPage("orderConfirmation");
-
                 break;
         }
     }
@@ -201,5 +200,3 @@ class PageController {
         $view->show();
     }
 }
-
-?>
