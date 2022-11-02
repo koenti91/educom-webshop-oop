@@ -127,12 +127,14 @@ function saveOrder($userId, $deliveryAddressId, $cartRows) {
     $conn = connectDatabase();
     
     $sql = "INSERT INTO orders (user_id, date, delivery_address_id) VALUES ($userId, CURRENT_DATE(), ".$deliveryAddressId.")";
+    echo " 1" . $sql;
 
     $orderId = executeQuery($conn, $sql, false);
 
     foreach($cartRows as $cartRow) {
         $sql = " INSERT INTO order_products (order_id, product_id, quantity, price) 
                  VALUES ('$orderId', '" . $cartRow->product->id . "', '" . $cartRow->quantity . "', '" . $cartRow->product->price . "')";
+        echo $sql;
         executeQuery($conn, $sql, false);
     }
     closeDatabase($conn);
