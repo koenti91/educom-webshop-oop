@@ -3,11 +3,13 @@
 session_start();
 
 require_once ("controllers/PageController.php");
+require_once ("models/PageModel.php");
+require_once ("crud/Crud.php");
 
 // Main
 $crud = new Crud();
-$pageModel -> newPageModel(null, $crud);
-$controller = new PageController();
+$model = new PageModel(null, $crud);
+$controller = new PageController($model);
 $controller -> handleRequest();
 
 ?>

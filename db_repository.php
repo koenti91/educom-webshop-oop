@@ -170,7 +170,7 @@ function findDeliveryById($userId, $id) {
 function saveDeliveryAddress($userId, $address, $zipCode, $city, $phone) {
     $conn = connectDatabase();
 
-    $sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, '$address', '$zipCode', '$city','$phone')";
+$sql = "INSERT INTO delivery_address (user_id, address, zip_code, city, phone) VALUES ($userId, '$address', '$zipCode', '$city','$phone')";    
     $id = executeQuery($conn, $sql, false);
     
     closeDatabase($conn);

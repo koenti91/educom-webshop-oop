@@ -1,6 +1,6 @@
 <?php
 require_once "models/UserModel.php";
-require_once "db_repository.php";
+
 class ShopModel extends UserModel
 {
 

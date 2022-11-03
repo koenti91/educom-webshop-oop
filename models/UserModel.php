@@ -1,4 +1,5 @@
 <?php 
+require_once "./PageModel.php";
 
 class UserModel extends PageModel {
     
@@ -83,8 +84,9 @@ class UserModel extends PageModel {
     }
 
     private function authenticateUser () {
-            require_once "db_repository.php";
-            $this->user = findUserbyEmail($this->email);
+            require_once "./crud/UserCrud.php";
+            //$this->user = findUserbyEmail($this->email);
+            $this->user = $this->crud->readUserByEmail($this->email);
             return $this->authenticateUserByUser();
         }
 
@@ -174,10 +176,11 @@ class UserModel extends PageModel {
     }
 
     public function storeUser() {
-        require_once "db_repository.php";
+
         $options = [12];
         $hashedPassword = password_hash ($this->password, PASSWORD_BCRYPT, $options);
-        saveUser($this->name, $this->email, $hashedPassword);
+        $this->crud->createUser($this->name, $this->user, $hashedPassword);
+        // saveUser($this->name, $this->email, $hashedPassword);
     }
     
     // contact 
@@ -296,16 +299,18 @@ class UserModel extends PageModel {
     }
 
     private function authenticateUserByID() {
-        require_once "db_repository.php";
-        $this->user = findUserByID($this->sessionManager->getLoggedInUserID());
+        require_once "./crud/UserCrud.php";
+        // $this->user = findUserByID($this->sessionManager->getLoggedInUserID());
+        $this->user = $this->crud->readUserById($this->sessionManager->getLoggedInUserID());
         $this->authenticateUserByUser();
     }
 
     public function storeNewPassword() {
-        require_once "db_repository.php";
+        require_once "./crud/UserCrud.php";
         $options = [12];
         $hashedPassword = password_hash ($this->newPassword, PASSWORD_BCRYPT, $options);
-        changePassword($this->userId, $hashedPassword);
+        // changePassword($this->userId, $hashedPassword);
+        $this->crud->updateUser($this->userId, $hashedPassword);
     }
 }
 ?>

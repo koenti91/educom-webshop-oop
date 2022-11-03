@@ -1,10 +1,12 @@
 <?php
-require_once "models/PageModel.php";
+require_once "./models/PageModel.php";
 
 class PageController {
 
+    private $model;
     private $pageModel;
     private $shopModel;
+    private $crud;
 
     public function __construct() {
         $this->model = new PageModel(NULL);
@@ -26,7 +28,8 @@ class PageController {
         switch ($this->model->page) {
             case "login":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->model);
+                $userCrud = new UserCrud($this->model->crud);
+                $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateLogin();
                 if($this->model->valid) {
                     $this->model->doLoginUser();
@@ -36,7 +39,7 @@ class PageController {
 
             case "logout":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->model);
+                $this->model = new UserModel($this->pageModel);
                 $this->model -> doLogoutUser();
                 $this->model -> setPage("home");
                 break;
@@ -52,7 +55,8 @@ class PageController {
                 
             case "register":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->model);
+                $userCrud = new UserCrud($this->model->crud);
+                $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateRegister();
                 if($this->model->valid) {
                     $this->model->storeUser();
@@ -62,7 +66,8 @@ class PageController {
 
             case "changepw":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->model);
+                $userCrud = new UserCrud($this->model->crud);
+                $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateChangePassword();
                 if($this->model->valid) {
                     $this->model->storeNewPassword();
@@ -121,7 +126,6 @@ class PageController {
 
             case "lastCheck":
                 require_once "models/ShopModel.php";
-
                 $this->model = new ShopModel($this->model);
                 $this->model->getLastCheckBeforeOrder();
                 $this->model->storeOrder();
