@@ -28,7 +28,7 @@ class PageController {
         switch ($this->model->page) {
             case "login":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->model->crud);
+                $userCrud = new UserCrud($this->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateLogin();
                 if($this->model->valid) {
@@ -55,7 +55,7 @@ class PageController {
                 
             case "register":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->model->crud);
+                $userCrud = new UserCrud($this->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateRegister();
                 if($this->model->valid) {
@@ -66,7 +66,7 @@ class PageController {
 
             case "changepw":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->model->crud);
+                $userCrud = new UserCrud($this->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateChangePassword();
                 if($this->model->valid) {

@@ -1,5 +1,5 @@
 <?php 
-require_once "./PageModel.php";
+require_once "PageModel.php";
 
 class UserModel extends PageModel {
     
@@ -187,14 +187,14 @@ class UserModel extends PageModel {
     public function validateContact() {
         if($this->isPost) {
             
-            $this->gender = testInput($this->getPostVar("gender"));
+            $this->gender = $this->testInput($this->getPostVar("gender"));
             if (empty($this->gender)) { 
                 $this->genderErr = "Aanhef is verplicht.";
             } else if (!array_key_exists($this->gender, GENDERS)) {
                 $this->genderErr = "Aanhef is niet correct.";
             }
     
-            $this->name = testInput($this->getPostVar("name"));
+            $this->name = $this->testInput($this->getPostVar("name"));
             if (empty($this->name)) {
                 $this->nameErr = "Naam is verplicht";
             }
@@ -202,7 +202,7 @@ class UserModel extends PageModel {
                 $this->nameErr = "Alleen letters en spaties zijn toegestaan.";
             }
             
-            $this->email = testInput($this->getPostVar("email"));
+            $this->email = $this->testInput($this->getPostVar("email"));
             if (empty($this->email)) {
                 $this->emailErr = "E-mail is verplicht";
             } 
@@ -210,7 +210,7 @@ class UserModel extends PageModel {
                 $this->emailErr = "Vul een correct e-mailadres in";
             }
             
-            $this->phone = testInput($this->getPostVar("phone"));
+            $this->phone = $this->testInput($this->getPostVar("phone"));
             if (empty($this->phone)) {
                 $this->phoneErr = "Telefoonnummer is verplicht";
             } 
@@ -218,7 +218,7 @@ class UserModel extends PageModel {
                 $this->phoneErr = "Vul een geldig telefoonnummer in.";
             }
     
-            $this->preferred = testInput($this->getPostVar("preferred"));
+            $this->preferred = $this->testInput($this->getPostVar("preferred"));
             if (!isset($this->preferred)) {  
                 $this->preferredErr = "Vul een voorkeur in."; 
             } 
@@ -226,7 +226,7 @@ class UserModel extends PageModel {
                 $this->preferredErr = "Vul een voorkeur in.";  
             }
     
-            $this->question = testInput($this->getPostVar("question"));    
+            $this->question = $this->testInput($this->getPostVar("question"));    
             if (empty($this->question)) {
                 $this->questionErr = " Vul hier je vraag of opmerking in.";
             }   

@@ -3,6 +3,10 @@ require_once "basic_doc.php";
 require_once "forms_doc.php";
 
 class ContactThanksDoc extends BasicDoc {
+    protected function showHeader () {
+        echo 'Contact';
+    }
+
     protected function showContent()
     {
         echo '<p class="bedankt">Bedankt voor het invullen. Ik neem zo snel mogelijk contact met je op!</p>
