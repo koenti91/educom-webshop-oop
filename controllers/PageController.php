@@ -4,12 +4,9 @@ require_once "./models/PageModel.php";
 class PageController {
 
     private $model;
-    private $pageModel;
-    private $shopModel;
-    private $crud;
 
-    public function __construct() {
-        $this->model = new PageModel(NULL);
+    public function __construct($pageModel) {
+        $this->model = $pageModel;
     }
 
     public function handleRequest() {
@@ -28,7 +25,8 @@ class PageController {
         switch ($this->model->page) {
             case "login":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->crud);
+                require_once "crud/UserCrud.php";
+                $userCrud = new UserCrud($this->model->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateLogin();
                 if($this->model->valid) {
@@ -39,14 +37,14 @@ class PageController {
 
             case "logout":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->pageModel);
+                $this->model = new UserModel($this->model, null);
                 $this->model -> doLogoutUser();
                 $this->model -> setPage("home");
                 break;
 
             case "contact":
                 require_once "models/UserModel.php";
-                $this->model = new UserModel($this->model);
+                $this->model = new UserModel($this->model, null);
                 $this->model -> validateContact();
                 if($this->model->valid) {
                     $this->model->setPage("thanks");
@@ -55,7 +53,8 @@ class PageController {
                 
             case "register":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->crud);
+                require_once "crud/UserCrud.php";
+                $userCrud = new UserCrud($this->model->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateRegister();
                 if($this->model->valid) {
@@ -66,7 +65,8 @@ class PageController {
 
             case "changepw":
                 require_once "models/UserModel.php";
-                $userCrud = new UserCrud($this->crud);
+                require_once "crud/UserCrud.php";
+                $userCrud = new UserCrud($this->model->crud);
                 $this->model = new UserModel($this->model, $userCrud);
                 $this->model -> validateChangePassword();
                 if($this->model->valid) {
@@ -77,14 +77,18 @@ class PageController {
 
             case 'webshop':
                 require_once "models/ShopModel.php";
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model->handleActionForm();
                 $this->model->getShoppingCartRows();
                 break;
 
             case "detail":
                 require_once "models/ShopModel.php";
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model->handleActionForm();
                 $this->model->getShoppingCartRows();
                 $this->model->getProductDetails();
@@ -92,14 +96,18 @@ class PageController {
 
             case "shoppingCart":
                 require_once "models/ShopModel.php";
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model ->handleActionForm();
                 $this->model->getShoppingCartRows();
                 break;
 
             case "deliveryAddress":
                 require_once 'models/ShopModel.php';
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model->validateDeliveryAddressSelection();
                 if($this->model->valid) {
                     if ($this->model->deliveryAddressId == 0) {
@@ -115,7 +123,10 @@ class PageController {
 
             case "newDeliveryAddress":
                 require_once "models/ShopModel.php";
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                require_once 
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model->validateDeliveryAddress();
                 if ($this->model->valid){
                     $this->model->storeDeliveryAddress();
@@ -126,7 +137,9 @@ class PageController {
 
             case "lastCheck":
                 require_once "models/ShopModel.php";
-                $this->model = new ShopModel($this->model);
+                require_once "crud/ShopCrud.php";
+                $shopCrud = new ShopCrud($this->model->crud);
+                $this->model = new ShopModel($this->model, $shopCrud);
                 $this->model->getLastCheckBeforeOrder();
                 $this->model->storeOrder();
                 $this->model->setPage("orderConfirmation");

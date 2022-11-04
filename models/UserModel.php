@@ -25,7 +25,7 @@ class UserModel extends PageModel {
     public $newPasswordErr = '';
     public $repeatNewPassword = '';
     public $repeatNewPasswordErr = '';
-    public $user = array();
+    public $user = NULL;
     private $userId = 0;
     public $valid = false;
     public $deliveryAddressId;
@@ -39,8 +39,9 @@ class UserModel extends PageModel {
     public $addresses = '';
     public $id = 0;
 
-    public function __construct($pageModel) {
+    public function __construct($pageModel, $userCrud) {
         PARENT::__construct($pageModel);
+        $this->userCrud = $userCrud;
     }
 
     public function testInput($string) {
@@ -75,18 +76,16 @@ class UserModel extends PageModel {
                     $this->genericErr = "E-mailadres is niet bekend of wachtwoord wordt niet herkend.";
                 }
                 else {
-                    $this->email = $this->user["email"];
-                    $this->name = $this->user["name"];
-                    $this->userId = $this->user["id"];
+                    $this->email = $this->user->email;
+                    $this->name = $this->user->name;
+                    $this->userId = $this->user->id;
                 }
             }
         }
     }
 
     private function authenticateUser () {
-            require_once "./crud/UserCrud.php";
-            //$this->user = findUserbyEmail($this->email);
-            $this->user = $this->crud->readUserByEmail($this->email);
+            $this->user = $this->userCrud->readUserByEmail($this->email);
             return $this->authenticateUserByUser();
         }
 
@@ -94,7 +93,7 @@ class UserModel extends PageModel {
         if (empty($this->user)) {
             return;
         }
-        if (!password_verify($this->password, $this->user["password"])) {
+        if (!password_verify($this->password, $this->user->password)) {
             $this->user = NULL;
         }
     }
@@ -166,7 +165,7 @@ class UserModel extends PageModel {
             }
     
             if (empty($this->nameErr) && empty($this->emailErr) && empty($this->passwordErr) && empty($this->passwordRepeatErr)){
-                if (empty(findUserByEmail($this->email))){
+                if (empty($this->userCrud->readUserByEmail($this->email))){
                     $this->valid = true;
                 } else {
                     $this->emailErr = "E-mailadres is al in gebruik.";
@@ -179,8 +178,7 @@ class UserModel extends PageModel {
 
         $options = [12];
         $hashedPassword = password_hash ($this->password, PASSWORD_BCRYPT, $options);
-        $this->crud->createUser($this->name, $this->user, $hashedPassword);
-        // saveUser($this->name, $this->email, $hashedPassword);
+        $this->userCrud->createUser($this->name, $this->email, $hashedPassword);
     }
     
     // contact 
@@ -246,12 +244,12 @@ class UserModel extends PageModel {
     public function validateChangePassword() {
         if($this->isPost) {
 
-            $this->password = testInput($this->getPostvar("current-password"));
+            $this->password = $this->testInput($this->getPostvar("current-password"));
                 if (empty($this->password)) {
                     $this->passwordErr = "Vul hier je oude wachtwoord in.";
                 }
     
-            $this->newPassword = testInput($this->getPostvar("new-password"));
+            $this->newPassword = $this->testInput($this->getPostvar("new-password"));
                 if (empty($this->newPassword)) {
                     $this->newPasswordErr = "Vul hier je nieuwe wachtwoord in.";
                 }
@@ -278,7 +276,7 @@ class UserModel extends PageModel {
                     }
                 }
             
-            $this->repeatNewPassword = testInput($this->getPostvar("new-password2"));
+            $this->repeatNewPassword = $this->testInput($this->getPostvar("new-password2"));
                 if (empty($this->repeatNewPassword)) {
                     $this->repeatNewPasswordErr = "Herhaal hier je nieuwe wachtwoord.";
                 }
@@ -299,18 +297,14 @@ class UserModel extends PageModel {
     }
 
     private function authenticateUserByID() {
-        require_once "./crud/UserCrud.php";
-        // $this->user = findUserByID($this->sessionManager->getLoggedInUserID());
-        $this->user = $this->crud->readUserById($this->sessionManager->getLoggedInUserID());
+        $this->user = $this->userCrud->readUserById($this->sessionManager->getLoggedInUserID());
         $this->authenticateUserByUser();
     }
 
     public function storeNewPassword() {
-        require_once "./crud/UserCrud.php";
         $options = [12];
         $hashedPassword = password_hash ($this->newPassword, PASSWORD_BCRYPT, $options);
-        // changePassword($this->userId, $hashedPassword);
-        $this->crud->updateUser($this->userId, $hashedPassword);
+        $this->userCrud->updateUser($this->userId, $hashedPassword);
     }
 }
 ?>

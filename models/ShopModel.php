@@ -27,11 +27,12 @@ class ShopModel extends UserModel
     public $phoneErr = '';
     public $valid = false;
 
-    public function __construct($pageModel)
+    public function __construct($pageModel, $shopCrud)
     {
-        PARENT::__construct($pageModel);
+        PARENT::__construct($pageModel, $shopCrud);
+        $this->shopCrud = $shopCrud;
 
-        $this->canOrder = $pageModel->sessionManager->isUserLoggedIn();
+        $this->canOrder = $this->sessionManager->isUserLoggedIn();
     }
 
     public function handleActionForm()
@@ -65,7 +66,7 @@ class ShopModel extends UserModel
         require_once("CartRow.php");
         try {
             $cart = $this->sessionManager->getShoppingCart();
-            $this->products = getAllProducts();
+            $this->products = $this->shopCrud->readAllProducts();
 
             foreach ($cart as $productId => $quantity) {
                 $product = $this->getArrayVar($this->products, $productId, null);
@@ -85,7 +86,7 @@ class ShopModel extends UserModel
     public function storeOrder()
     {
         try {
-            saveOrder($this->userId, $this->deliveryAddressId, $this->cartRows);
+            $this->shopCrud->createOrder($this->userId, $this->deliveryAddressId);
             $this->sessionManager->emptyCart();
         } catch (Exception $exception) {
             $this->genericErr = 'Excuses, op dit moment lukt het niet om je bestelling te verwerken.';
@@ -98,7 +99,7 @@ class ShopModel extends UserModel
         $this->product = NULL;
         try {
             $this->productId = $this->getUrlVar('id');
-            $this->product = findProductById($this->productId);
+            $this->product = $this->shopCrud->readProductById($this->productId);
         } catch (Exception $exception) {
             $this->genericErr = "Excuses, op dit moment kunnen er geen producten worden weergegeven.";
             $this->logError("GetAllProducts failed" . $exception->getMessage());
@@ -173,12 +174,12 @@ class ShopModel extends UserModel
 
     public function getCurrentDeliveryAddress()
     {
-        return findDeliveryAddresses($this->userId);
+        return $this->shopCrud->readDeliveryAddresses($this->userId);
     }
 
     public function storeDeliveryAddress()
     {
-        $this->deliveryAddressId = saveDeliveryAddress($this->userId, $this->address, $this->zipCode, $this->city, $this->phone);
+        $this->deliveryAddressId = $this->shopCrud->createDeliveryAddress($this->userId, $this->address, $this->zipCode, $this->city, $this->phone);
         $this->sessionManager->storeDeliveryAddressForSession($this->deliveryAddressId);
     }
 
@@ -187,7 +188,7 @@ class ShopModel extends UserModel
         try {
             $this->userId = $this->sessionManager->getLoggedInUserID();
             $this->addresses = $this->getCurrentDeliveryAddress();
-            $this->user = findUserByID($this->userId);
+            $this->user = $this->userCrud->readUserById($this->userId);
         } catch (Exception $exception) {
             $this->genericErr = "Excuses, adressen kunnen niet worden opgehaald.";
             $this->logError("GetDeliveryAddressesData failed" . $exception->getMessage());
@@ -199,8 +200,8 @@ class ShopModel extends UserModel
         $this->userId = $this->sessionManager->getLoggedInUserID();
         $this->deliveryAddressId = $this->sessionManager->getDeliveryAddressIdForSession();
 
-        $this->deliveryAddress = findDeliveryById($this->userId, $this->deliveryAddressId);
-        $this->user = findUserById($this->userId);
+        $this->deliveryAddress = $this->shopCrud->readDeliveryById($this->userId, $this->deliveryAddressId);
+        $this->user = $this->userCrud->readUserById($this->userId);
         $this->getShoppingCartRows();
     }
 }

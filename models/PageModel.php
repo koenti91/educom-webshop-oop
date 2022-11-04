@@ -10,7 +10,7 @@ class PageModel {
     public $errors = array();
     public $genericErr = '';
     protected SessionManager $sessionManager;
-    protected $crud;
+    public $crud;
 
     public function __construct($copy, $crud = null) {
         if (empty($copy) or $crud !== null) {
